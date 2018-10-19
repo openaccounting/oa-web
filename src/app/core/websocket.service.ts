@@ -10,7 +10,7 @@ import 'rxjs/add/operator/retryWhen';
 import 'rxjs/add/operator/repeatWhen';
 import 'rxjs/add/operator/delay';
 
-var version = '^0.1.8';
+var version = '^1.0.0';
 
 @Injectable()
 export class WebSocketService {

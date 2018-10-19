@@ -22,7 +22,7 @@ export class ApiService {
   private httpOptions = {
     headers: new HttpHeaders({
       'content-type':  'application/json',
-      'accept-version': '^0.1.8'
+      'accept-version': '^1.0.0'
     })
   };
   private orgId: string;
