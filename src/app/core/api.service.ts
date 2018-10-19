@@ -9,8 +9,8 @@ import { Price } from '../shared/price';
 import { ApiKey } from '../shared/apikey';
 import { Invite } from '../shared/invite';
 import { Observable } from 'rxjs/Observable';
-import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import { catchError, retry } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 import { AppError } from '../shared/error';
 
 let logger;
@@ -184,7 +184,7 @@ export class ApiService {
       .pipe(catchError(this.handleError));
   }
 
-  postAccounts(accounts: AccountApi[]): Observable<AccountApi> {
+  postAccounts(accounts: AccountApi[]): Observable<AccountApi[]> {
     return this.http.post<AccountApi[]>(this.url + '/orgs/' + this.orgId + '/accounts', accounts, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
@@ -314,7 +314,8 @@ export class ApiService {
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.
       logger.error('An error occurred:', error.error.message);
-      return new ErrorObservable(new AppError(error.error.message));
+
+      return throwError(new AppError(error.error.message))
     } else {
       // The backend returned an unsuccessful response code.
       // The response body may contain clues as to what went wrong,
@@ -334,7 +335,7 @@ export class ApiService {
         appError = new AppError('An unexpected error has occurred');
       }
 
-      return new ErrorObservable(appError);
+      return throwError(appError);
     }
   };
 }
