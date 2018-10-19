@@ -1,0 +1,78 @@
+<h1>Dashboard</h1>
+<p class="description">
+  <a href="/docs/getting-started" target="_blank">Click here</a> for help getting started.
+</p>
+<div class="section">
+<!-- <div class="card getting-started">
+  <button type="button" class="close" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <div class="card-body">
+    <p><a href="/docs/getting-started" target="_blank">Click here</a> for help getting started.</p>
+  </div>
+</div> -->
+<div class="card budget">
+  <div class="card-body">
+    <div class="container-fluid" [ngClass]="{expanded: budgetExpanded}">
+      <div class="row">
+        <div class="col-8">
+          <h5>Current spending</h5>
+        </div>
+        <div class="col-4 amount">
+          <h5>{{expenseAmount | currencyFormat:org.precision}}</h5>
+        </div>
+      </div>
+      <div class="row" *ngFor="let expense of expenseAccounts" [routerLink]="'/accounts/'+expense.id+'/transactions'" [ngClass]="{hidden: hiddenExpenses[expense.id]}">
+        <div class="col-8 name">
+          {{expense.fullName | accountName:2}}
+        </div>
+        <div class="col-4 amount">
+          {{expense.nativeBalanceCost | currencyFormat:org.precision}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-8">
+          <a [routerLink]="" (click)="toggleExpandedBudget()">
+            <span *ngIf="budgetExpanded">Less</span>
+            <span *ngIf="!budgetExpanded">More</span>
+          </a>
+        </div>
+        <div class="col-4 amount">
+          <a routerLink="/reports/income">See all expenses</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card recent">
+  <div class="card-body">
+    <div class="container-fluid" [ngClass]="{expanded: recentExpanded}">
+      <div class="row">
+        <div class="col-12">
+          <h5>Recent transactions</h5>
+        </div>
+      </div>
+      <div class="row" *ngFor="let recentTx of recentTxs" [routerLink]="'/accounts/'+recentTx.account.id+'/transactions'" [ngClass]="{hidden: recentTx.hidden}">
+        <div class="col-2 date">
+          {{recentTx.tx.date | date:"M/d"}}
+        </div>
+        <div class="col-6 description">
+          {{recentTx.tx.description}}
+        </div>
+        <div class="col-4 amount" [ngClass]="{'negative': recentTx.split.amount > 0}">
+          {{-recentTx.split.amount | currencyFormat:recentTx.account.precision}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <a [routerLink]="" (click)="toggleExpandedRecent()">
+            <span *ngIf="recentExpanded">Less</span>
+            <span *ngIf="!recentExpanded">More</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

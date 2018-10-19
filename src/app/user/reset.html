@@ -1,0 +1,30 @@
+<h1>Reset Password</h1>
+<div class="section">
+  <div *ngIf="success">
+    <p>
+      Your password has been updated. Please <a routerLink="/login">login</a> to your account.
+    </p>
+  </div>
+
+  <div *ngIf="!success">
+    <form [formGroup]="changePasswordForm" (ngSubmit)="changePassword()">
+      <div class="form-group row">
+        <label for="password" class="col-sm-3 col-form-label">New Password</label>
+        <div class="col-sm-9">
+          <input formControlName="password" id="password" type="password" class="form-control" />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="password2" class="col-sm-3 col-form-label">Repeat Password</label>
+        <div class="col-sm-9">
+          <input formControlName="password2" id="password2" type="password" class="form-control" />
+        </div>
+      </div>
+      <p *ngIf="changePasswordForm.controls.password2.errors?.mismatchedPassword">
+        Passwords do not match.
+      </p>
+      <p *ngIf="error" class="error">{{error.message}}</p>
+      <button type="submit" class="btn btn-primary" [disabled]="!changePasswordForm.valid">Save</button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,44 @@
+@import '../../sass/variables';
+
+.row {
+  cursor: pointer;
+}
+
+.getting-started {
+  position: relative;
+  .close {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+  }
+  .card-body {
+    padding: 0
+  }
+}
+
+.budget {
+  .hidden {
+    display: none
+  }
+  .expanded .hidden {
+    display: flex
+  }
+  .amount {
+    text-align: right;
+  }
+}
+
+.recent {
+  .amount {
+    text-align: right;
+  }
+  .amount.negative {
+    color: $negative;
+  }
+  .hidden {
+    display: none
+  }
+  .expanded .hidden {
+    display: flex
+  }
+}

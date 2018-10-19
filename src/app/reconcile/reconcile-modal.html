@@ -1,0 +1,56 @@
+<div class="modal-header">
+  <h4 class="modal-title">Reconcile</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-6">Inflows</div>
+        <div class="col-6">Outflows</div>
+      </div>
+      <div class="row">
+        <div class="col-6 inflows">
+          <div class="container-fluid">
+            <div *ngFor="let item of inflows" class="row">
+              <div class="col-3">{{item.tx.date | date:"M/d/y"}}</div>
+              <div class="col-4">{{item.tx.description}}</div>
+              <div class="col-3">{{item.amount | currencyFormat:account.precision:account.currency}}</div>
+              <div class="col-2">
+                <input type="checkbox" (click)="toggleReconciled(item)" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 outflows">
+          <div class="container-fluid">
+            <div *ngFor="let item of outflows" class="row">
+              <div class="col-3">{{item.tx.date | date:"M/d/y"}}</div>
+              <div class="col-4">{{item.tx.description}}</div>
+              <div class="col-3">{{item.amount | currencyFormat:account.precision:account.currency}}</div>
+              <div class="col-2">
+                <input type="checkbox" (click)="toggleReconciled(item)"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col-4 offset-8">
+          Balance: {{balance | currencyFormat:account.precision:account.currency}}<br>
+          Reconciled: {{reconciled | currencyFormat:account.precision:account.currency}}<br>
+          Difference: {{(balance - reconciled) | currencyFormat:account.precision:account.currency}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <p *ngIf="error" class="error">{{error.message}}</p>
+        </div>
+      </div>
+    </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">Cancel</button>
+  <button type="button" class="btn btn-primary" (click)="save()">Complete</button>
+</div>

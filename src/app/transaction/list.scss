@@ -1,0 +1,76 @@
+@import '../../sass/variables';
+
+.row > div {
+  border-bottom: 1px solid #bdd7ef;
+}
+.header {
+  span {
+    font-weight: bold;
+  }
+}
+.row.odd {
+  background-color: #e4f6ff;
+}
+.negative {
+  color: $negative;
+}
+
+.description > div {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.transfer {
+  overflow: hidden;
+  direction: rtl;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.editing .transfer {
+  direction: ltr;
+}
+
+.body {
+  overflow-y: auto;
+  height: calc(100vh - 170px);
+}
+
+.custom-3 {
+  flex: 0 0 12.5%;
+  max-width: 12.5%;
+}
+
+.custom-5 {
+  flex: 0 0 20.8333%;
+  max-width: 20.8333%;
+}
+
+.custom-7 {
+  flex: 0 0 29.1666%;
+  max-width: 29.1666%;
+}
+
+.form-control {
+  padding: .2rem .2rem;
+}
+
+.add-split {
+  padding-top: .4rem;
+  padding-bottom: .4rem;
+}
+
+button[type="submit"] {
+  display: none;
+}
+
+input[type="date"] {
+  padding: 5px 0px;
+  font-size: 0.75rem
+}
+
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-clear-button {
+  display: none
+}

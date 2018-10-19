@@ -1,0 +1,54 @@
+<h1>Register</h1>
+
+<div class="section">
+  <form *ngIf="!registered" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-group row">
+      <label for="firstName" class="col-sm-3 col-form-label">First Name</label>
+      <div class="col-sm-9">
+        <input formControlName="firstName" id="firstName" type="text" class="form-control" placeholder="First Name" />
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="lastName" class="col-sm-3 col-form-label">Last Name</label>
+      <div class="col-sm-9">
+        <input formControlName="lastName" id="lastName" type="text" class="form-control" placeholder="Last Name" />
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="email" class="col-sm-3 col-form-label">Email</label>
+      <div class="col-sm-9">
+        <input formControlName="email" id="email" type="email" class="form-control" placeholder="Email" />
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="password" class="col-sm-3 col-form-label">Password</label>
+      <div class="col-sm-9">
+        <input formControlName="password" id="password" type="password" class="form-control" placeholder="Password" />
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="password2" class="col-sm-3 col-form-label">Repeat Password</label>
+      <div class="col-sm-9">
+        <input formControlName="password2" id="password2" type="password" class="form-control" placeholder="Repeat Password" />
+      </div>
+    </div>
+    <p *ngIf="form.controls.password2.errors?.mismatchedPassword">
+      Passwords do not match.
+    </p>
+    <div class="form-group row">
+      <div class="col-sm-3">
+
+      </div>
+      <div class="col-sm-9">
+        <input formControlName="agreeToTerms" id="agreeToTerms" type="checkbox" class="mr-2" />
+        <label for="agreeToTerms">I agree to <a href="/tou" target="_blank">Terms of Use</a> and <a href="/privacy-policy" target="_blank">Privacy Policy</a>.</label>
+      </div>
+    </div>
+    <p *ngIf="error" class="error">{{error.message}}</p>
+    <button type="submit" class="btn btn-primary" [disabled]="!form.valid">Register</button>
+  </form>
+
+  <div *ngIf="registered">
+    <p>An email was sent to {{email}}. Please click on the link to verify your account.</p>
+  </div>
+</div>

@@ -1,0 +1,73 @@
+.name {
+  min-height:2rem;
+}
+.hidden {
+  display: none
+}
+.row {
+  cursor: pointer;
+}
+.row:not(.expanded) > div > .expander {
+  display: inline-block;
+  background-image: url("/assets/plus.svg");
+  width: 11px;
+  height: 11px;
+  margin-right: 5px;
+}
+.row.expanded > div > .expander {
+  display: inline-block;
+  background-image: url("/assets/minus.svg");
+  width: 11px;
+  height: 11px;
+  margin-right: 5px;
+}
+.noexpander {
+  display: inline-block;
+  width: 11px;
+  margin-right: 5px;
+}
+.edit {
+  display: none;
+  padding-left: 10px;
+}
+.row:hover .edit {
+  display: inline;
+}
+.row[depth="1"] .name {
+  padding-left: 15px;
+}
+.row[depth="2"] .name {
+  padding-left: 30px;
+}
+.row[depth="3"] .name {
+  padding-left: 45px;
+}
+.row[depth="4"] .name {
+  padding-left: 60px;
+}
+.row[depth="5"] .name {
+  padding-left: 75px;
+}
+.row .name {
+  padding-left: 90px;
+}
+@media (min-width: 768px) {
+  .row[depth="1"] .balance {
+    padding-right: 15px;
+  }
+  .row[depth="2"] .balance {
+    padding-right: 30px;
+  }
+  .row[depth="3"] .balance {
+    padding-right: 45px;
+  }
+  .row[depth="4"] .balance {
+    padding-right: 60px;
+  }
+  .row[depth="5"] .balance {
+    padding-right: 75px;
+  }
+  .row .balance {
+    padding-right: 90px;
+  }
+}

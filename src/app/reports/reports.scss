@@ -1,0 +1,51 @@
+.title {
+  text-align: center;
+}
+.report {
+  h4 {
+    font-size: 1.3rem
+  }
+  .total {
+    font-weight: bold
+  }
+  > .row[depth="1"]:first-child {
+    padding-top: 0px;
+  }
+  .row[depth="1"] {
+    padding-top: 20px;
+  }
+
+  .row[depth="1"] div:first-child,
+  .row[depth="2"] .name {
+    padding-left: 0px;
+  }
+  .row[depth="3"] .name {
+    padding-left: 20px;
+  }
+  .row[depth="4"] .name {
+    padding-left: 40px;
+  }
+  .row[depth="5"] .name {
+    padding-left: 60px;
+  }
+  .row .name {
+    padding-left: 60px;
+  }
+  .row[depth="1"] div:last-child,
+  .row[depth="2"] .amount {
+    padding-right: 0px
+  }
+  .row[depth="3"] .amount {
+    padding-right: 100px;
+  }
+  .row[depth="4"] .amount {
+    padding-right: 200px;
+  }
+  .row[depth="5"] .amount {
+    padding-right: 300px;
+  }
+  .row .amount {
+    padding-right: 300px;
+    text-align: right;
+  }
+}

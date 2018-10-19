@@ -1,0 +1,8 @@
+<h1>Reports</h1>
+<div class="section">
+  <ul>
+    <li *ngFor="let report of reports">
+      <a [routerLink]="report.url">{{report.title}}</a>
+    </li>
+  </ul>
+</div>

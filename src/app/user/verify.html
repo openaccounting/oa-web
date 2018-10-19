@@ -1,0 +1,16 @@
+<div *ngIf="success">
+  <h1>Success</h1>
+
+  <div class="section">
+    <p>
+      Your email has been verified. Please <a routerLink="/login">login</a> to your account.
+    </p>
+  </div>
+</div>
+
+<div *ngIf="error">
+  <h1>Verification Error</h1>
+  <div class="section">
+    <p class="error">{{error.message}}</p>
+  </div>
+</div>

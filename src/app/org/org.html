@@ -1,0 +1,117 @@
+<h1>Organization</h1>
+
+<div class="section">
+  <h2>Choose Organization</h2>
+
+  <form [formGroup]="chooseOrgForm" (ngSubmit)="chooseOrgSubmit()">
+    <div class="form-group row">
+      <label for="id" class="col-sm-3 col-form-label">Current Organization</label>
+      <div class="col-sm-9">
+        <select class="form-control" id="id" formControlName="id">
+          <option *ngFor="let org of orgs" [value]="org.id">
+            {{org.name}}
+          </option>
+        </select>
+      </div>
+    </div>
+    <p *ngIf="chooseOrgError" class="error">{{chooseOrgError.message}}</p>
+    <button class="btn btn-primary" type="submit" [disabled]="!chooseOrgForm.valid">Update</button>
+  </form>
+</div>
+
+<div class="section">
+  <h2>Join Organization</h2>
+
+  <form [formGroup]="joinOrgForm" (ngSubmit)="joinOrgSubmit()">
+    <div class="form-group row">
+      <label for="inviteId" class="col-sm-3 col-form-label">Invite Code</label>
+      <div class="col-sm-9">
+        <input formControlName="inviteId" type="text" class="form-control" id="inviteId">
+      </div>
+    </div>
+    <p *ngIf="joinOrgError" class="error">{{joinOrgError.message}}</p>
+    <button class="btn btn-primary" type="submit" [disabled]="!joinOrgForm.valid">Join</button>
+  </form>
+</div>
+
+<div *ngIf="invites !== null"class="section">
+
+  <h2 >Invite to {{currentOrg.name}}</h2>
+
+  <form [formGroup]="inviteForm" (ngSubmit)="inviteSubmit()">
+    <div class="form-group row">
+      <label for="email" class="col-sm-3 col-form-label">Email</label>
+      <div class="col-sm-9">
+        <input formControlName="email" type="text" class="form-control" id="email">
+      </div>
+    </div>
+    <p *ngIf="inviteFormError" class="error">{{inviteFormError.message}}</p>
+    <button class="btn btn-primary" type="submit" [disabled]="!inviteForm.valid">Invite</button>
+  </form>
+
+  <div class="container-fluid mt-3">
+    <div class="row">
+      <div class="col-3">
+        <strong>Code</strong>
+      </div>
+      <div class="col-5">
+        <strong>Email</strong>
+      </div>
+      <div class="col-2">
+        <strong>Status</strong>
+      </div>
+      <div class="col-2">
+      </div>
+    </div>
+    <div class="row" *ngFor="let invite of invites">
+      <div class="col-3">
+        {{invite.id}}
+      </div>
+      <div class="col-5">
+        {{invite.email}}
+      </div>
+      <div class="col-2">
+        <span *ngIf="invite.accepted">accepted</span>
+        <span *ngIf="!invite.accepted">pending</span>
+      </div>
+      <div class="col-2">
+        <a (click)="deleteInvite(invite)">Delete</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="section">
+  <h2>Create Organization</h2>
+  <form [formGroup]="newOrgForm" (ngSubmit)="newOrgSubmit()">
+    <div class="form-group row">
+      <label for="name" class="col-sm-3 col-form-label">Name</label>
+      <div class="col-sm-9">
+        <input formControlName="name" type="text" class="form-control" id="name" placeholder="Organization name">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="currency" class="col-sm-3 col-form-label">Currency</label>
+      <div class="col-sm-9">
+        <input formControlName="currency" type="text" class="form-control" id="currency" placeholder="Currency">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="precision" class="col-sm-3 col-form-label">Decimal Places</label>
+      <div class="col-sm-9">
+        <input formControlName="precision" type="text" class="form-control" id="precision" placeholder="Decimal Places">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="createDefaultAccounts" class="col-sm-3 col-form-label">Create default accounts<br>(can be customized later)</label>
+      <div class="col-sm-9">
+        <input formControlName="createDefaultAccounts" id="createDefaultAccounts" type="checkbox" class="form-control" />
+      </div>
+    </div>
+    <p *ngIf="newOrgError" class="error">{{newOrgError.message}}</p>
+    <button class="btn btn-primary" type="submit" [disabled]="!newOrgForm.valid">Create New Organization</button>
+  </form>
+</div>
+
+

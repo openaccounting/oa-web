@@ -1,0 +1,22 @@
+.autocomplete {
+  display: none;
+  position: relative;
+  z-index: 3;
+
+  .inner {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: #fff;
+    border: 1px solid #d4d4d4;
+    border-bottom: none;
+  }
+  .suggestion {
+    padding: 10px;
+    border-bottom: 1px solid #d4d4d4;
+  }
+}
+
+.autocomplete.visible {
+  display: block;
+}

@@ -1,0 +1,76 @@
+@import '~sass/variables';
+
+.navbar-dark .navbar-nav .nav-link {
+  color: #fff;
+}
+
+.navbar-brand {
+  line-height: 1.5
+}
+
+@media (min-width: 768px) {
+  .sidebar {
+    border-right: 1px solid rgba(0,0,0,.06);
+    height: 100vh;
+  }
+}
+
+#topNav {
+  line-height: 1.5
+}
+
+#leftNav {
+  margin-top: 10px;
+  line-height: 2
+}
+
+#leftNav li > div {
+  border-bottom: 1px solid rgba(0,0,0,.06);
+}
+
+#leftNav a {
+  display: block;
+  padding: .25rem 1.5rem;
+  color: #466e9a;
+}
+
+#leftNav a.active {
+  color: $blue;
+}
+
+#leftNav .nav {
+  display: block;
+}
+
+#leftNav .tools {
+  margin: 1rem 0 0 0;
+  padding: .25rem 1.5rem;
+}
+
+.loading {
+  cursor: wait;
+  opacity: 0.4;
+}
+
+.content {
+  padding: 1rem 0;
+  background-color: #f8fcff;
+}
+
+@media (max-width: 767px) {
+  .sidebar:not(.display) {
+    display: none;
+  } 
+}
+
+.content .navbar-toggler {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+
+@media (min-width: 768px) {
+  .content .navbar-toggler:not(.display) {
+    display: none;
+  } 
+}

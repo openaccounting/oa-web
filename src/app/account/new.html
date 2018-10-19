@@ -1,0 +1,36 @@
+<h1>New Account</h1>
+
+<div class="section">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-group row">
+      <label for="name" class="col-sm-3 col-form-label">Name</label>
+      <div class="col-sm-9">
+        <input formControlName="name" id="name" type="text" class="form-control" placeholder="Account Name" />
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="currency" class="col-sm-3 col-form-label">Currency</label>
+      <div class="col-sm-9">
+        <input formControlName="currency" id="currency" type="text" class="form-control" placeholder="Currency" />
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="precision" class="col-sm-3 col-form-label">Decimal Places</label>
+      <div class="col-sm-9">
+        <input formControlName="precision" id="precision" type="number" class="form-control" placeholder="Decimal Places" />
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="parent" class="col-sm-3 col-form-label">Parent Account</label>
+      <div class="col-sm-9">
+        <select class="form-control" id="parent" formControlName="parent">
+          <option *ngFor="let account of selectAccounts" [value]="account.id">
+            {{account.fullName | slice:0:50}}
+          </option>
+        </select>
+      </div>
+    </div>
+    <p *ngIf="error" class="error">{{error.message}}</p>
+    <button type="submit" class="btn btn-primary" [disabled]="!form.valid">Create</button>
+  </form>
+</div>

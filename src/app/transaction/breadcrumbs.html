@@ -1,0 +1,6 @@
+<div class="breadcrumbs">
+  <span *ngFor="let account of accountCrumbs; let i = index">
+    <span><a routerLink="/accounts">{{account.name}}</a></span>
+    <span *ngIf="i < accountCrumbs.length - 1"> &gt; </span>
+  </span>
+</div>

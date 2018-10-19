@@ -1,0 +1,13 @@
+<div class="container-fluid">
+  <div class="row" *ngFor="let account of accounts$ | async" [ngClass]="{expanded: isExpanded(account), hidden: !isVisible(account)}" [attr.depth]="account.depth">
+    <div class="col-8 name" (click)="click(account)">
+      <span *ngIf="account.children.length" class="expander"></span>
+      <span *ngIf="!account.children.length" class="noexpander"></span>
+      {{account.name | slice:0:30}}
+      <span class="edit"><a [routerLink]="'/accounts/' + account.id + '/edit'">Edit</a></span>
+    </div>
+    <div class="col-4 balance text-right">
+      <span>{{account | accountBalance:'price'}}</span>
+    </div>
+  </div>
+</div>

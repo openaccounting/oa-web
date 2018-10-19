@@ -1,0 +1,65 @@
+<h1>Income Statement<br>{{startDate | date:"shortDate"}} - {{endDate.getTime() - 1 | date:"shortDate"}} (<a [routerLink]="" (click)="toggleShowDateForm()">edit</a>)</h1>
+
+<div class="section">
+  <form *ngIf="showDateForm" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-group row">
+      <label for="name" class="col-sm-3 col-form-label">Start Date</label>
+      <div class="col-sm-9">
+        <input formControlName="startDate" type="date" class="form-control" id="startDate">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="name" class="col-sm-3 col-form-label">End Date</label>
+      <div class="col-sm-9">
+        <input formControlName="endDate" type="date" class="form-control" id="endDate">
+      </div>
+    </div>
+    <p *ngIf="error">{{error.message}}</p>
+    <button class="btn btn-primary" type="submit" [disabled]="!form.valid">Update</button>
+  </form>
+
+  <div *ngIf="incomeAccount" class="container-fluid report">
+    <div class="row" depth="1">
+      <div class="col-8">
+        <h4>Income</h4>
+      </div>
+      <div class="col-4 amount">
+        <h4>{{-incomeAccount.totalNativeBalanceCost | currencyFormat:org.precision}}</h4>
+      </div>
+    </div>
+    <div class="row" *ngFor="let account of incomeAccounts" [attr.depth]="account.depth">
+      <div class="col-8 name" *ngIf="account.totalNativeBalanceCost">
+        <span *ngIf="account.children.length">{{account.name}}</span>
+        <span *ngIf="!account.children.length"><a [routerLink]="'/accounts/' + account.id + '/transactions'">{{account.name | slice:0:30}}</a></span>
+      </div>
+      <div class="col-4 amount" *ngIf="account.totalNativeBalanceCost">
+        {{-account.totalNativeBalanceCost | currencyFormat:org.precision}}
+      </div>
+    </div>
+    <div class="row" depth="1">
+      <div class="col-8">
+        <h4>Expenses</h4>
+      </div>
+      <div class="col-4 amount">
+        <h4>{{expenseAccount.totalNativeBalanceCost | currencyFormat:org.precision}}</h4>
+      </div>
+    </div>
+    <div class="row" *ngFor="let account of expenseAccounts" [attr.depth]="account.depth">
+      <div class="col-8 name" *ngIf="account.totalNativeBalanceCost">
+        <span *ngIf="account.children.length">{{account.name}}</span>
+        <span *ngIf="!account.children.length"><a [routerLink]="'/accounts/' + account.id + '/transactions'">{{account.name | slice:0:30}}</a></span>
+      </div>
+      <div class="col-4 amount" *ngIf="account.totalNativeBalanceCost">
+        {{account.totalNativeBalanceCost | currencyFormat:org.precision}}
+      </div>
+    </div>
+    <div class="row" depth="1">
+      <div class="col-8">
+        <h4>Net Income</h4>
+      </div>
+      <div class="col-4 amount">
+        <h4>{{-incomeAccount.totalNativeBalanceCost - expenseAccount.totalNativeBalanceCost | currencyFormat:org.precision}}</h4>
+      </div>
+    </div>
+  </div>
+</div>

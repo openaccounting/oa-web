@@ -1,0 +1,76 @@
+@import './variables';
+@import "~bootstrap/scss/bootstrap";
+
+/* Our styles */
+
+body {
+  font-family: "Roboto", "Helvetica Neue", sans-serif;
+  color: #406084;
+  line-height: 1.7;
+}
+
+.title {
+  margin-top: 30px;
+  margin-bottom: 20px;
+  color: $blue;
+  font-weight: 400;
+}
+
+.h5, h5 {
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.card {
+  margin-top: 20px;
+  border: 1px solid rgba(0,0,0,.06);
+}
+
+.error {
+  color: #f00;
+}
+
+a:not([href]):not([tabindex]) {
+  color: #bbc;
+  cursor: pointer;
+}
+
+a {
+  color: #bbc;
+}
+
+a:hover {
+  color: #bbc;
+  text-decoration: none;
+}
+
+.footer {
+  text-align: center;
+}
+
+.content h1 {
+  font-size: 1.5rem;
+  color: $blue;
+  font-weight: 400;
+  margin: 1rem 0;
+  padding: 0 3rem 0rem 3rem;
+}
+
+.content > * > .description {
+  padding: 0 3rem;
+}
+
+.section {
+  margin: 1rem 0rem;
+  padding: 0 3rem 1rem 3rem;
+
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+
+  h2 {
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin: 3rem 0;
+  }
+}

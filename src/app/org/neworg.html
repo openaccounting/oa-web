@@ -1,0 +1,45 @@
+<h1>Organization</h1>
+
+<div class="section">
+  <h2>Join Organization</h2>
+
+  <p>If you have an invite code, enter it here to join an existing organization.</p>
+
+  <form [formGroup]="joinOrgForm" (ngSubmit)="joinOrgSubmit()">
+    <div class="form-group row">
+      <label for="inviteId" class="col-sm-3 col-form-label">Invite Code</label>
+      <div class="col-sm-9">
+        <input formControlName="inviteId" type="text" class="form-control" id="inviteId">
+      </div>
+    </div>
+    <p *ngIf="joinOrgError" class="error">{{joinOrgError.message}}</p>
+    <button class="btn btn-primary" type="submit" [disabled]="!joinOrgForm.valid">Join</button>
+  </form>
+</div>
+
+<div class="section">
+  <h2>New Organization</h2>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input formControlName="name" type="text" class="form-control" id="name" placeholder="Organization name">
+    </div>
+    <div class="form-group">
+      <label for="currency">Currency</label>
+      <input formControlName="currency" type="text" class="form-control" id="currency" placeholder="Currency">
+    </div>
+    <div class="form-group">
+      <label for="precision">Decimal Places</label>
+      <input formControlName="precision" type="text" class="form-control" id="precision" placeholder="Decimal Places">
+    </div>
+    <div class="form-group">
+      <label for="createDefaultAccounts">Create default accounts<br>(can be customized later)</label>
+      <input formControlName="createDefaultAccounts" id="createDefaultAccounts" type="checkbox" class="form-control" />
+    </div>
+    <p *ngIf="error" class="error">
+      {{error.message}}
+    </p>
+    <button type="submit" class="btn btn-primary" [disabled]="!form.valid">Submit</button>
+  </form>
+</div>

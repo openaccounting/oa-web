@@ -1,0 +1,96 @@
+<h1>Balance Sheet<br>{{date | date:"shortDate"}} (<a [routerLink]="" (click)="toggleShowOptionsForm()">options</a>)</h1>
+
+<div class="section">
+  <div *ngIf="showOptionsForm" class="card card-body">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-group row">
+        <label for="name" class="col-sm-3 col-form-label">Date</label>
+        <div class="col-sm-9">
+          <input formControlName="date" type="date" class="form-control" id="date">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="priceSource" class="col-sm-3 col-form-label">Price Source</label>
+        <div class="col-sm-9">
+          <select class="form-control" id="priceSource" formControlName="priceSource">
+            <option value="cost">Cost</option>
+            <option value="price">Nearest In Time</option>
+          </select>
+        </div>
+      </div>
+      <p *ngIf="error">{{error.message}}</p>
+      <button class="btn btn-primary" type="submit" [disabled]="!form.valid">Update</button>
+    </form>
+  </div>
+
+  <div *ngIf="assetAccount" class="container-fluid report">
+    <div class="row" depth="1">
+      <div class="col-8">
+        <h4>Assets</h4>
+      </div>
+      <div class="col-4 amount">
+        <h4 *ngIf="priceSource === 'price'">{{+assetAccount.totalNativeBalancePrice | currencyFormat:org.precision}}</h4>
+        <h4 *ngIf="priceSource === 'cost'">{{+assetAccount.totalNativeBalanceCost | currencyFormat:org.precision}}</h4>
+      </div>
+    </div>
+    <div class="row" *ngFor="let account of assetAccounts" [attr.depth]="account.depth">
+      <div class="col-8 name" *ngIf="account.totalNativeBalancePrice || account.totalNativeBalanceCost">
+        <span *ngIf="account.children.length">{{account.name}}</span>
+        <span *ngIf="!account.children.length"><a [routerLink]="'/accounts/' + account.id + '/transactions'">{{account.name | slice:0:30}}</a></span>
+      </div>
+      <div class="col-4 amount" *ngIf="priceSource === 'price' && account.totalNativeBalancePrice">
+        {{+account.totalNativeBalancePrice | currencyFormat:org.precision}}
+      </div>
+      <div class="col-4 amount" *ngIf="priceSource === 'cost' && account.totalNativeBalanceCost">
+        {{+account.totalNativeBalanceCost | currencyFormat:org.precision}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <hr/>
+      </div>
+    </div>
+    <div class="row" depth="1">
+      <div class="col-8">
+        <h4>Liabilities</h4>
+      </div>
+      <div class="col-4 amount">
+        <h4 *ngIf="priceSource === 'price'">{{-liabilityAccount.totalNativeBalancePrice | currencyFormat:org.precision}}</h4>
+        <h4 *ngIf="priceSource === 'cost'">{{-liabilityAccount.totalNativeBalanceCost | currencyFormat:org.precision}}</h4>
+      </div>
+    </div>
+    <div class="row" *ngFor="let account of liabilityAccounts" [attr.depth]="account.depth">
+      <div class="col-8 name" *ngIf="account.totalNativeBalancePrice || account.totalNativeBalanceCost">
+        <span *ngIf="account.children.length">{{account.name}}</span>
+        <span *ngIf="!account.children.length"><a [routerLink]="'/accounts/' + account.id + '/transactions'">{{account.name | slice:0:30}}</a></span>
+      </div>
+      <div class="col-4 amount" *ngIf="priceSource === 'price' && account.totalNativeBalancePrice">
+        {{-account.totalNativeBalancePrice | currencyFormat:org.precision}}
+      </div>
+      <div class="col-4 amount" *ngIf="priceSource === 'cost' && account.totalNativeBalanceCost">
+        {{-account.totalNativeBalanceCost | currencyFormat:org.precision}}
+      </div>
+    </div>
+    <div class="row" depth="1">
+      <div class="col-8">
+        <h4>Equity</h4>
+      </div>
+      <div class="col-4 amount">
+        <h4 *ngIf="priceSource === 'price'">{{-equityAccount.totalNativeBalancePrice | currencyFormat:org.precision}}</h4>
+        <h4 *ngIf="priceSource === 'cost'">{{-equityAccount.totalNativeBalanceCost | currencyFormat:org.precision}}</h4>
+      </div>
+    </div>
+    <div class="row" *ngFor="let account of equityAccounts" [attr.depth]="account.depth">
+      <div class="col-8 name" *ngIf="account.totalNativeBalancePrice || account.totalNativeBalanceCost">
+        <span *ngIf="account.children.length">{{account.name}}</span>
+        <span *ngIf="!account.children.length"><a [routerLink]="'/accounts/' + account.id + '/transactions'">{{account.name | slice:0:30}}</a></span>
+      </div>
+      <div class="col-4 amount" *ngIf="priceSource === 'price' && account.totalNativeBalancePrice">
+        {{-account.totalNativeBalancePrice | currencyFormat:org.precision}}
+      </div>
+      <div class="col-4 amount" *ngIf="priceSource === 'cost' && account.totalNativeBalanceCost">
+        {{-account.totalNativeBalanceCost | currencyFormat:org.precision}}
+      </div>
+    </div>
+  </div>
+</div>

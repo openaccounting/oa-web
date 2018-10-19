@@ -1,0 +1,124 @@
+<h1 *ngIf="account">{{account.name | slice:0:30}}</h1>
+
+<div class="section">
+  <div *ngIf="account" class="mb-2">
+    <breadcrumbs [account]="account"></breadcrumbs>
+  </div>
+
+  <div class="wrapper">
+    <div class="header">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col custom-3">
+            <span>Date</span>
+          </div>
+          <div class="col custom-7">
+            <span>Description</span>
+          </div>
+          <div class="col custom-5">
+            <span>Transfer</span>
+          </div>
+          <div class="col custom-3">
+            <span>Debit</span>
+          </div>
+          <div class="col custom-3">
+            <span>Credit</span>
+          </div>
+          <div class="col custom-3">
+            <span>Balance</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="body" #body id="mybody" (scroll)="onScroll()">
+      <div class="container-fluid">
+        <form [id]="'form' + item.tx.id + item.activeSplitIndex" [formGroup]="item.form" *ngFor="let item of items; let i = index">
+          <div class="row" (click)="editTransaction(item, $event)" [ngClass]="{odd: !(i % 2), editing: item.editing}">
+            <div class="col custom-3 date">
+              <span *ngIf="!item.editing" class="date">{{item.tx.date | date:"M/d/y"}}</span>
+              <input *ngIf="item.editing" type="date" formControlName="date" placeholder="Date" class="form-control" (keyup.enter)="onEnter(item, $event)" (blur)="onBlur(item)"/>
+            </div>
+            <div class="col custom-7 description">
+              <div *ngIf="!item.editing">{{item.tx.description}}</div>
+              <input *ngIf="item.editing" type="text" formControlName="description" placeholder="Description" class="form-control" (keyup.enter)="onEnter(item, $event)" (blur)="onBlur(item)"/>
+              <tx-autocomplete [item]="item" [accountId]="accountId" (tx)="autocomplete(item, $event)"></tx-autocomplete>
+            </div>
+            <div class="col custom-5 transfer">
+              <span *ngIf="!item.editing" class="transfer">{{getTransferString(item) | slice:0:50}}</span>
+              <select *ngIf="item.editing" class="form-control" formControlName="accountId" [attr.disabled]="item.showSplits ? '' : null" (keyup.enter)="onEnter(item, $event)" (blur)="onBlur(item)">
+                <option *ngFor="let account of selectAccounts" [value]="account.id">
+                  {{account.fullName | slice:0:50}}
+                </option>
+              </select>
+            </div>
+            <div class="col custom-3 debit">
+              <span *ngIf="!item.editing" class="debit">{{getDebit(item) | currencyFormat:account.precision:account.currency}}</span>
+              <input *ngIf="item.editing" type="text" formControlName="debit" placeholder="Debit" class="form-control" (keyup.enter)="onEnter(item, $event)" (blur)="onBlur(item)"/>
+            </div>
+            <div class="col custom-3 credit">
+              <span *ngIf="!item.editing" class="credit">{{getCredit(item) | currencyFormat:account.precision:account.currency}}</span>
+              <input *ngIf="item.editing" type="text" formControlName="credit" placeholder="Credit" class="form-control" (keyup.enter)="onEnter(item, $event)" (blur)="onBlur(item)"/>
+            </div>
+            <div class="col custom-3 balance" [ngClass]="{'negative': item.balance < 0}">
+              <span *ngIf="!item.editing" class="balance">{{item.balance | currencyFormat:account.precision:account.currency}}</span>
+
+              <div *ngIf="item.editing" ngbDropdown class="d-inline-block">
+                <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>Action</button>
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                  <button class="dropdown-item" (click)="addSplit(item)">Split</button>
+                  <button class="dropdown-item" (click)="advancedEdit(item)">Adv. Edit</button>
+                  <button *ngIf="item.tx.id" class="dropdown-item" (click)="deleteTransaction(item)">Delete</button>
+                </div>
+              </div>
+  <!--             <a *ngIf="item.editing" [routerLink]="" (click)="addSplit(item)" (mousedown)="preventBlur(item)">Split</a><br/>
+              <a *ngIf="item.editing" [routerLink]="" (click)="advancedEdit(item)" (mousedown)="preventBlur(item)">Advanced Edit</a><br/>
+              <a *ngIf="item.editing && item.tx.id" [routerLink]="" (click)="deleteTransaction(item)" (mousedown)="preventBlur(item)">Delete</a> -->
+            </div> 
+          </div>
+          <div class="row" *ngFor="let split of item.form.get('splits').controls; let i=index" [formGroup]="split">
+            <div class="col custom-3">
+            </div>
+            <div class="col custom-7 add-split">
+              <a [routerLink]="" (click)="deleteSplit(item, i)" (mousedown)="preventBlur(item)">Remove Split</a>
+            </div>
+            <div class="col custom-5">
+              <select class="form-control" formControlName="accountId" (keyup.enter)="onEnter(item, $event)">
+                <option *ngFor="let account of selectAccounts" [value]="account.id">
+                  {{account.fullName}}
+                </option>
+              </select>
+            </div>
+            <div class="col custom-3">
+              <input type="text" formControlName="debit" placeholder="Debit" class="form-control" (keyup.enter)="onEnter(item, $event)"/>
+            </div>
+            <div class="col custom-3">
+              <input type="text" formControlName="credit" placeholder="Credit" class="form-control" (keyup.enter)="onEnter(item, $event)"/>
+            </div>
+            <div class="col custom-3 add-split">
+              <a *ngIf="i === item.form.get('splits').controls.length - 1" [routerLink]="" (click)="addSplit(item)" (mousedown)="preventBlur(item)">Add Split</a>
+              <!-- <button type="submit">hidden submit</button> -->
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <p *ngIf="error" class="error">{{error.message}}</p>
+</div>
+
+<ng-template #confirmDeleteModal let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Confirm delete</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>Are you sure you want to delete this transaction?</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="d()">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="c()">Delete</button>
+  </div>
+</ng-template>

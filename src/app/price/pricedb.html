@@ -1,0 +1,36 @@
+<h1>Price Database</h1>
+
+<div class="description">
+  If you have different currencies or stocks, you can use the price editor to input their current exchange rates or prices.
+</div>
+
+<div class="section">
+
+  <div class="container-fluid">
+    <div *ngFor="let currency of currencies$ | async">
+      <div class="row" depth="1" [ngClass]="{expanded: isExpanded(currency)}">
+        <div class="col-12" (click)="click(currency)">
+          <span class="expander"></span>
+          {{currency}}
+        </div>
+      </div>
+      <ng-container *ngIf="isExpanded(currency)">
+        <div class="row" *ngFor="let price of prices$[currency] | async" depth="2">
+          <div class="col-4 date">
+            {{price.date | date:"M/d/y"}}
+          </div>
+          <div class="col-4 price">
+            {{price.price * multiplier | currencyFormat:org.precision:org.currency}}
+          </div>
+          <div class="col-4 edit">
+            <a (click)="editPrice(price)">Edit</a> | <a (click)="deletePrice(price)">Delete</a>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <p class="error" *ngIf="error">{{error}}</p>
+
+  <button type="button" class="btn btn-primary mt-3" (click)="newPrice()">New Price</button>
+</div>

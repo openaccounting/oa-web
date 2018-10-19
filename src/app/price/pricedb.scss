@@ -1,0 +1,23 @@
+.row[depth="1"] {
+  cursor: pointer;
+}
+.row:not(.expanded) > div > .expander {
+  display: inline-block;
+  background-image: url("/assets/plus.svg");
+  width: 11px;
+  height: 11px;
+  margin-right: 5px;
+}
+.row.expanded > div > .expander {
+  display: inline-block;
+  background-image: url("/assets/minus.svg");
+  width: 11px;
+  height: 11px;
+  margin-right: 5px;
+}
+.row[depth="1"] .date {
+  padding-left: 15px;
+}
+.row[depth="2"] .date {
+  padding-left: 60px;
+}
