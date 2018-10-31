@@ -20,8 +20,7 @@ export class Util {
     let date = new Date();
     date.setHours(0, 0, 0, 0);
     date.setFullYear(parseInt(parts[0]));
-    date.setMonth(parseInt(parts[1]) - 1);
-    date.setDate(parseInt(parts[2]));
+    date.setMonth(parseInt(parts[1]) - 1, parseInt(parts[2]));
 
     return date;
   }
