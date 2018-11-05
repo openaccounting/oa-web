@@ -8,6 +8,7 @@ export class User {
   password: string;
   agreeToTerms: boolean;
   emailVerified: boolean;
+  signupSource: string;
   constructor(options: any = {}) {
     this.id = options.id || this.id;
     this.inserted = options.inserted ? new Date(options.inserted) : null;
@@ -18,5 +19,6 @@ export class User {
     this.password = options.password || this.password;
     this.agreeToTerms = options.agreeToTerms || false;
     this.emailVerified = options.emailVerified || this.emailVerified;
+    this.signupSource = options.signupSource || this.signupSource;
   }
 }

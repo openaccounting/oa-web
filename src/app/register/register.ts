@@ -43,6 +43,7 @@ export class RegisterPage {
   onSubmit() {
     let formUser = new User(this.form.value);
     formUser.id = Util.newGuid();
+    formUser.signupSource = 'web';
     this.log.debug(formUser);
 
     this.userService.postUser(formUser)
