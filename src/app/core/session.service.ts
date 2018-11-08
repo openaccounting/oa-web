@@ -44,12 +44,12 @@ export class SessionService {
     this.loading = true;
     let server = this.configService.get('server');
 
-    if(!server) {
-      server = 'https://openaccounting.io:8080/api';
+    if(!server || server === 'https://openaccounting.io:8080/api') {
+      server = 'https://api.openaccounting.io';
       this.configService.put('server', server);
     }
 
-    this.apiService.setUrl(server || 'https://openaccounting.io:8080/api');
+    this.apiService.setUrl(server);
 
     sessionId = sessionId || this.configService.get('sessionId');
 
@@ -104,7 +104,7 @@ export class SessionService {
         }
 
         // initialize websocket
-        let matches = server.match(/\/\/(.+?)\//);
+        let matches = server.match(/\/\/([^\/]+)/);
 
         if(matches[1]) {
           let url = 'wss://' + 
