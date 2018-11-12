@@ -42,3 +42,15 @@
     display: flex
   }
 }
+
+@media (max-width: 767px) {
+  .card {
+    .container-fluid {
+      padding-left: 2px;
+      padding-right: 2px;
+    }
+  }
+  .card-body {
+    padding: 0.5rem;
+  }
+}

@@ -74,3 +74,16 @@ a:hover {
     margin: 3rem 0;
   }
 }
+
+@media (max-width: 767px) {
+  .section {
+    padding: 0 0.5rem 1rem 0.5rem;
+  }
+  .content h1 {
+    padding: 0 0.5rem 0rem 0.5rem;
+  }
+
+  .content > * > .description {
+    padding: 0 0.5rem;
+  }
+}

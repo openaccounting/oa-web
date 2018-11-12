@@ -54,13 +54,13 @@
         </div>
       </div>
       <div class="row" *ngFor="let recentTx of recentTxs" [routerLink]="'/accounts/'+recentTx.account.id+'/transactions'" [ngClass]="{hidden: recentTx.hidden}">
-        <div class="col-2 date">
+        <div class="col-3 col-md-2 date">
           {{recentTx.tx.date | date:"M/d"}}
         </div>
-        <div class="col-6 description">
+        <div class="col-5 col-md-6 description">
           {{recentTx.tx.description}}
         </div>
-        <div class="col-4 amount" [ngClass]="{'negative': recentTx.split.amount > 0}">
+        <div class="col-4 col-md-4 amount" [ngClass]="{'negative': recentTx.split.amount > 0}">
           {{-recentTx.split.amount | currencyFormat:recentTx.account.precision}}
         </div>
       </div>
