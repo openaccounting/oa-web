@@ -29,4 +29,4 @@ Click on the Settings link and specify the URL for your [server](https://github.
 
 ## Help
 
-[Join our Slack chatroom](https://openaccounting.slack.com/signup) and talk with us!
+[Join our Slack chatroom](https://join.slack.com/t/openaccounting/shared_invite/enQtNDc3NTAyNjYyOTYzLTc0ZjRjMzlhOTg5MmYwNGQxZGQyM2IzZTExZWE0NDFlODRlNGVhZmZiNDkyZDlhODYwZDcyNTQ5ZWJkMDU3N2M) and talk with us!
