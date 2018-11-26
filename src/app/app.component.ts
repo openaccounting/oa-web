@@ -24,6 +24,10 @@ export class AppComponent implements OnInit {
       link: '/dashboard',
       name: 'Dashboard'
     },
+    '/transactions/new': {
+      link: '/transactions/new',
+      name: 'New Transaction'
+    },
     '/accounts': {
       link: '/accounts',
       name: 'Accounts'
@@ -61,6 +65,7 @@ export class AppComponent implements OnInit {
 
   public leftNav: any[] = [
     this.navItems['/dashboard'],
+    this.navItems['/transactions/new'],
     this.navItems['/accounts'],
     this.navItems['/reports'],
     this.navItems['/prices'],
@@ -178,6 +183,7 @@ export class AppComponent implements OnInit {
 
   showLoggedInMenu() {
     this.showNavItem('/dashboard');
+    this.showNavItem('/transactions/new');
     this.showNavItem('/accounts');
     this.showNavItem('/reports');
     this.showNavItem('/prices');
@@ -189,6 +195,7 @@ export class AppComponent implements OnInit {
 
   showCreateOrgMenu() {
     this.hideNavItem('/dashboard');
+    this.hideNavItem('/transactions/new');
     this.hideNavItem('/accounts');
     this.hideNavItem('/reports');
     this.hideNavItem('/prices');
@@ -200,6 +207,7 @@ export class AppComponent implements OnInit {
 
   showLoggedOutMenu() {
     this.hideNavItem('/dashboard');
+    this.hideNavItem('/transactions/new');
     this.hideNavItem('/accounts');
     this.hideNavItem('/reports');
     this.hideNavItem('/prices');

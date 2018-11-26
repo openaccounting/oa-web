@@ -8,6 +8,7 @@ import { AppRoutingModule } from '../app-routing.module';
 import { AdvancedEdit } from './advancededit';
 import { Autocomplete } from './autocomplete';
 import { Breadcrumbs } from './breadcrumbs';
+import { NewTransactionPage } from './new';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { Breadcrumbs } from './breadcrumbs';
     TxListPage,
     AdvancedEdit,
     Autocomplete,
-    Breadcrumbs
+    Breadcrumbs,
+    NewTransactionPage
   ],
   imports: [
     BrowserModule,

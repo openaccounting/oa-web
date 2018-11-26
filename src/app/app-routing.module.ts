@@ -15,6 +15,7 @@ import { NewOrgPage } from './org/neworg';
 import { OrgPage } from './org/org';
 import { SettingsPage } from './settings/settings';
 import { PriceDbPage } from './price/pricedb';
+import { NewTransactionPage } from './transaction/new';
 
 import { ReportsPage } from './reports/reports';
 import { IncomeReport } from './reports/income';
@@ -41,7 +42,8 @@ const routes: Routes = [
   { path: 'orgs', component: OrgPage },
   { path: 'settings', component: SettingsPage },
   { path: 'tools/reconcile', component: ReconcilePage },
-  { path: 'prices', component: PriceDbPage }
+  { path: 'prices', component: PriceDbPage },
+  { path: 'transactions/new', component: NewTransactionPage }
 ];
 
 @NgModule({

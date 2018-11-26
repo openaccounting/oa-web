@@ -1,0 +1,16 @@
+@import '../../sass/variables';
+
+.accordion {
+    .btn-link {
+        color: $black;
+    }
+    .card {
+        margin: 0;
+    }
+    .btn-group-toggle {
+        .btn-primary {
+            background-color: transparent;
+            color: $blue;
+        }
+    }
+}

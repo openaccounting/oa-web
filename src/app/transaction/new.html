@@ -1,0 +1,177 @@
+<h1>New Transaction</h1>
+
+<div class="section">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <ngb-accordion #acc="ngbAccordion" activeIds="toggle-1">
+      <ngb-panel id="toggle-1" [title]="getToggle1Title()">
+        <ng-template ngbPanelContent>
+          <!-- <input type="radio" class="btn btn-outline-primary mr-2" id="type-expense" value="Expense">
+          <input type="radio" class="btn btn-outline-primary mr-2" id="type-income" value="Income">
+          <input type="radio" class="btn btn-outline-primary mr-2" id="type-ob" value="Opening Balance">
+          <input type="radio" class="btn btn-outline-primary mr-2" id="type-other" value="Other"> -->
+          <div>
+            <!-- <button type="button" class="btn mr-2" (click)="setType('expense')" [ngClass]="{'btn-outline-primary': type !== 'expense', 'btn-primary': type === 'expense'}">
+              Expense
+            </button>
+            <button type="button" class="btn mr-2" (click)="setType('income')" [ngClass]="{'btn-outline-primary': type !== 'income', 'btn-primary': type === 'income'}">
+              Income
+            </button>
+            <button type="button" class="btn mr-2" (click)="setType('openingBalance')" [ngClass]="{'btn-outline-primary': type !== 'openingBalance', 'btn-primary': type === 'openingBalance'}">
+              Opening Balance
+            </button>
+            <button type="button" class="btn mr-2" (click)="setType('other')" [ngClass]="{'btn-outline-primary': type !== 'other', 'btn-primary': type === 'other'}">
+              Other
+            </button> -->
+
+            <div class="btn-group-toggle" ngbRadioGroup name="radioBasic" formControlName="type">
+                <label ngbButtonLabel class="btn-primary mr-2">
+                  <input ngbButton type="radio" value="expense"> Expense
+                </label>
+                <label ngbButtonLabel class="btn-primary mr-2">
+                  <input ngbButton type="radio" value="income"> Income
+                </label>
+                <label ngbButtonLabel class="btn-primary mr-2">
+                  <input ngbButton type="radio" value="openingBalance"> Opening Balance
+                </label>
+                <label ngbButtonLabel class="btn-primary mr-2">
+                    <input ngbButton type="radio" value="other"> Other
+                  </label>
+              </div>
+          </div>
+          <div id="firstAccountPrimary" *ngIf="form.value?.type === 'expense'" class="mt-3">
+            <div class="btn-group-toggle" ngbRadioGroup name="radioBasic2" formControlName="firstAccountPrimary">
+              <label *ngFor="let account of expenseAccounts" ngbButtonLabel class="btn-primary mr-2">
+                <input ngbButton type="radio" [value]="account.id">{{account.label | slice:0:30}}
+              </label>
+              <label ngbButtonLabel class="btn-primary mr-2">
+                  <input ngbButton type="radio" value="other">Other
+              </label>
+            </div>
+            <div id="firstAccountSelect" *ngIf="form.value?.firstAccountPrimary === 'other'" class="mt-3">
+                <div class="form-group">
+                    <label for="firstAccountSecondary" class="col-sm-3 col-form-label">Choose Account</label>
+                    <select class="form-control" id="account" formControlName="firstAccountSecondary">
+                      <option *ngFor="let account of expenseAccountsAll" [value]="account.id">
+                        {{account.label | slice:0:30}}
+                      </option>
+                    </select>
+                  </div>
+            </div>
+          </div>
+          <div id="firstAccountPrimary" *ngIf="form.value?.type === 'income'" class="mt-3">
+              <div class="btn-group-toggle" ngbRadioGroup name="firstAccountPrimary" formControlName="firstAccountPrimary">
+                <label *ngFor="let account of incomeAccounts" ngbButtonLabel class="btn-primary mr-2">
+                  <input ngbButton type="radio" [value]="account.id">{{account.label | slice:0:30}}
+                </label>
+                <label ngbButtonLabel class="btn-primary mr-2">
+                    <input ngbButton type="radio" value="other">Other
+                </label>
+              </div>
+              <div id="firstAccountSelect" *ngIf="form.value?.firstAccountPrimary === 'other'" class="mt-3">
+                  <div class="form-group">
+                      <label for="firstAccountSecondary" class="col-sm-3 col-form-label">Choose Account</label>
+                      <select class="form-control" id="account" formControlName="firstAccountSecondary">
+                        <option *ngFor="let account of incomeAccountsAll" [value]="account.id">
+                          {{account.label | slice:0:30}}
+                        </option>
+                      </select>
+                    </div>
+              </div>
+            </div>
+        </ng-template>
+      </ngb-panel>
+      <ngb-panel id="toggle-2" [title]="getTitle()">
+        <ng-template ngbPanelContent>
+            <div id="secondAccountPrimary" *ngIf="form.value?.type === 'expense'" class="mt-3">
+                <div class="btn-group-toggle" ngbRadioGroup name="secondAccountPrimary" formControlName="secondAccountPrimary">
+                  <label *ngFor="let account of paymentAccounts" ngbButtonLabel class="btn-primary mr-2">
+                    <input ngbButton type="radio" [value]="account.id">{{account.label | slice:0:30}}
+                  </label>
+                  <label ngbButtonLabel class="btn-primary mr-2">
+                      <input ngbButton type="radio" value="other">Other
+                  </label>
+                </div>
+                <div id="secondAccountSelect" *ngIf="form.value?.secondAccountPrimary === 'other'" class="mt-3">
+                    <div class="form-group">
+                        <label for="secondAccountSecondary" class="col-sm-3 col-form-label">Choose Account</label>
+                        <select class="form-control" id="account" formControlName="secondAccountSecondary">
+                          <option *ngFor="let account of paymentAccountsAll" [value]="account.id">
+                            {{account.label | slice:0:30}}
+                          </option>
+                        </select>
+                      </div>
+                </div>
+            </div>
+            <div id="secondAccountPrimary" *ngIf="form.value?.type === 'income'" class="mt-3">
+                <div class="btn-group-toggle" ngbRadioGroup name="secondAccountPrimary" formControlName="secondAccountPrimary">
+                  <label *ngFor="let account of assetAccounts" ngbButtonLabel class="btn-primary mr-2">
+                    <input ngbButton type="radio" [value]="account.id">{{account.label | slice:0:30}}
+                  </label>
+                  <label ngbButtonLabel class="btn-primary mr-2">
+                      <input ngbButton type="radio" value="other">Other
+                  </label>
+                </div>
+                <div id="secondAccountSelect" *ngIf="form.value?.secondAccountPrimary === 'other'" class="mt-3">
+                    <div class="form-group">
+                        <label for="secondAccountSecondary" class="col-sm-3 col-form-label">Choose Account</label>
+                        <select class="form-control" id="account" formControlName="secondAccountSecondary">
+                          <option *ngFor="let account of assetAccountsAll" [value]="account.id">
+                            {{account.label | slice:0:30}}
+                          </option>
+                        </select>
+                      </div>
+                </div>
+            </div>
+            <div id="secondAccountSelect" *ngIf="form.value?.type === 'openingBalance'" class="mt-3">
+                <div class="form-group">
+                    <label for="secondAccountSecondary" class="col-sm-3 col-form-label">Choose Account</label>
+                    <select class="form-control" id="account" formControlName="secondAccountSecondary">
+                      <option *ngFor="let account of paymentAccountsAll" [value]="account.id">
+                        {{account.label | slice:0:30}}
+                      </option>
+                    </select>
+                  </div>
+            </div>
+        </ng-template>
+      </ngb-panel>
+      <ngb-panel id="toggle-3" title="Amount">
+        <ng-template ngbPanelContent>
+          <div class="form-group">
+            <input type="number" class="form-control" id="amount" formControlName="amount">
+          </div>
+        </ng-template>
+      </ngb-panel>
+      <ngb-panel id="toggle-4" title="Description">
+        <ng-template ngbPanelContent>
+          <div class="form-group">
+            <input type="text" class="form-control" id="description" formControlName="description">
+          </div>
+        </ng-template>
+      </ngb-panel>
+      <ngb-panel id="toggle-5" title="Date">
+        <ng-template ngbPanelContent>
+          <div class="form-group">
+            <input type="date" class="form-control" id="date" formControlName="date">
+          </div>
+        </ng-template>
+      </ngb-panel>
+      <ngb-panel id="toggle-6" title="Advanced">
+        <ng-template ngbPanelContent>
+          Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon
+          officia
+          aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon
+          tempor,
+          sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh
+          helvetica,
+          craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.
+          Leggings
+          occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them
+          accusamus
+          labore sustainable VHS.
+        </ng-template>
+      </ngb-panel>
+    </ngb-accordion>
+    <p *ngIf="error" class="error mt-3">{{error.message}}</p>
+    <button type="submit" class="btn btn-primary mt-3" [disabled]="!form.valid">Add Transaction</button>
+  </form>
+</div>
