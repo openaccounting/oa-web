@@ -142,9 +142,8 @@ export class NewTransactionPage {
       let splits = this.form.get('splits') as FormArray;
 
       if (splits.length > 0) {
-        let account = this.getFirstAccount();
         splits.at(0).patchValue({
-          accountId: account.id
+          accountId: val
         });
       }
     });
@@ -376,7 +375,17 @@ export class NewTransactionPage {
     let type = this.form.value.type;
 
     if (type) {
-      str += type.charAt(0).toUpperCase() + type.substr(1);
+      switch(type) {
+        case 'expense':
+          str += 'Expense';
+          break;
+        case 'income':
+          str += 'Income';
+          break;
+        case 'openingBalance':
+          str += 'Opening Balance';
+          break;
+      }
       if (account) {
         str += ' (' + account.name + ')';
       }
