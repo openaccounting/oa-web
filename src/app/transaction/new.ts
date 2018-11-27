@@ -43,7 +43,7 @@ export class NewTransactionPage {
   public paymentAccountsAll: any[] = [];
   public assetAccountsAll: any[] = [];
   public openingBalances: Account;
-  private accountTree: AccountTree;
+  public accountTree: AccountTree;
   public accountMap: any;
   @ViewChild('acc') acc: any;
   @ViewChild('amount') amount: ElementRef
