@@ -90,6 +90,13 @@ export class DashboardPage implements OnInit {
               return tree.accountIsChildOf(account, expenses) || tree.accountIsChildOf(account, income);
             });
 
+            // If it's not an income or expense transaction but it has 2 splits we can still display something
+            if(!splits.length && tx.splits.length === 2) {
+              splits = tx.splits.filter(split => {
+                return split.amount < 0;
+              });
+            }
+
             return splits.map(split => {
               let recentTx = new RecentTx();
               recentTx.split = split;
