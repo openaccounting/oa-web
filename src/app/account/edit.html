@@ -30,7 +30,7 @@
       </div>
     </div>
     <p *ngIf="error" class="error">{{error.message}}</p>
-    <button type="submit" class="btn btn-primary" [disabled]="!form.valid">Update</button>
+    <button type="submit" class="btn btn-primary mr-3" [disabled]="!form.valid">Update</button>
     <button type="button" class="btn btn-primary" (click)="confirmDelete()">Delete</button>
   </form>
 </div>
