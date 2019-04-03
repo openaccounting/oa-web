@@ -338,7 +338,7 @@ export class NewTransactionPage {
     });
 
     let firstAccounts = dataWithLabels.slice(0, this.numAccountsShown);
-    let nextAccounts = dataWithLabels.slice(this.numAccountsShown);
+    let nextAccounts = dataWithLabels.slice();
 
     nextAccounts.sort((a, b) => {
       let aAlpha = a.label.charCodeAt(0) >= 65 && a.label.charCodeAt(0) <= 122;
