@@ -238,14 +238,12 @@ export class ReconcilePage {
       this.sessionService.setLoading(true);
 
       let rec = this.pastReconciliations[0];
-      console.log(rec);
   
       Observable.from(rec.txs).mergeMap(tx => {
         let oldId = tx.id;
         tx.id = Util.newGuid();
 
         let data = tx.getData();
-        console.log(data);
 
         let newSplits = {};
 
