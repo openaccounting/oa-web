@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { Logger } from '../core/logger';
 import { Router } from '@angular/router';
 import { 
@@ -19,6 +19,10 @@ import { Util } from '../shared/util';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { ReconcileModal } from './reconcile-modal';
 import { Reconciliation } from './reconciliation';
+import { SessionService } from '../core/session.service';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/from';
+import 'rxjs/add/operator/mergeMap';
 
 @Component({
   selector: 'app-reconcile',
@@ -34,6 +38,7 @@ export class ReconcilePage {
   public unreconciledTxs: Transaction[];
   public error: AppError;
   private accountTree: AccountTree;
+  @ViewChild('confirmDeleteModal') confirmDeleteModal: ElementRef;
 
   constructor(
     private router: Router,
@@ -42,7 +47,8 @@ export class ReconcilePage {
     private orgService: OrgService,
     private txService: TransactionService,
     private fb: FormBuilder,
-    private modalService: NgbModal) {
+    private modalService: NgbModal,
+    private sessionService: SessionService) {
 
     let org = this.orgService.getCurrentOrg();
     this.accountForm = fb.group({
@@ -90,8 +96,10 @@ export class ReconcilePage {
 
     modal.componentInstance.setData(this.account, rec, this.unreconciledTxs);
 
-    modal.result.then((result) => {
+    modal.result.then((txs) => {
       this.log.debug('reconcile modal save');
+      rec.txs = txs;
+
       this.pastReconciliations.unshift(rec);
 
       this.newReconcile.patchValue(
@@ -170,6 +178,8 @@ export class ReconcilePage {
 
           let r = reconcileMap[endDate.getTime()];
 
+          r.txs.push(tx);
+
           if(this.account.debitBalance) {
             r.net += split.amount;
           } else {
@@ -220,6 +230,65 @@ export class ReconcilePage {
           startBalance: lastRec.endBalance / Math.pow(10, this.account.precision)
         }
       );
+    });
+  }
+
+  delete() {
+    this.modalService.open(this.confirmDeleteModal).result.then((result) => {
+      this.sessionService.setLoading(true);
+
+      let rec = this.pastReconciliations[0];
+      console.log(rec);
+  
+      Observable.from(rec.txs).mergeMap(tx => {
+        let oldId = tx.id;
+        tx.id = Util.newGuid();
+
+        let data = tx.getData();
+        console.log(data);
+
+        let newSplits = {};
+
+        for(let splitId in data.reconciledSplits) {
+          if(tx.splits[splitId].accountId !== this.account.id) {
+            newSplits[splitId] = tx.splits[splitId];
+          }
+        }
+
+        data.reconciledSplits = newSplits;
+
+        tx.setData(data);
+  
+        return this.txService.putTransaction(oldId, tx);
+      }, 8).subscribe(tx => {
+        this.log.debug('Saved tx ' + tx.id);
+      }, err => {
+        this.error = err;
+        this.sessionService.setLoading(false);
+      }, () => {
+        this.pastReconciliations.shift();
+        let lastRec = this.pastReconciliations[0];
+
+        if(lastRec) {
+          this.newReconcile.patchValue(
+            {
+              startDate: Util.getLocalDateString(lastRec.endDate),
+              startBalance: lastRec.endBalance / Math.pow(10, this.account.precision)
+            }
+          );
+        } else {
+          this.newReconcile.patchValue(
+            {
+              startDate: null,
+              startBalance: 0
+            }
+          );
+        }
+
+        this.sessionService.setLoading(false);
+      });
+    }, (reason) => {
+      this.log.debug('cancel delete');
     });
   }
 
