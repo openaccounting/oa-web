@@ -220,7 +220,7 @@ export class ReconcileModal {
       this.sessionService.setLoading(false);
     }, () => {
       this.sessionService.setLoading(false);
-      this.activeModal.close();
+      this.activeModal.close(txs);
     });
   }
 }
