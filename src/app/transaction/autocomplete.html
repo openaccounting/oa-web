@@ -1,4 +1,4 @@
-<div class="autocomplete" [ngClass]="{visible: visible}">
+<div class="autocomplete" [ngClass]="{visible: visible}" (mousedown)="preventBlur()">
   <div class="inner">
     <div class="suggestion" *ngFor="let tx of txs$ | async">
       <a (click)="click(tx)">{{tx.description}}</a>

@@ -452,8 +452,14 @@ export class TxListPage implements OnInit, AfterViewChecked {
     item.preventBlur = true;
   }
 
-  onBlur(item: TxItem) {
+  onBlur(item: TxItem, $event) {
     this.log.debug('blur2');
+    let elem = document.activeElement as any;
+
+    if(elem.form && elem.form.id === 'form' + item.tx.id + item.activeSplitIndex) {
+      // no blur if newly clicked element is in the same form
+      return;
+    }
 
     setTimeout(() => {
       this.log.debug('blur', item.form.pristine);
@@ -462,12 +468,16 @@ export class TxListPage implements OnInit, AfterViewChecked {
         return;
       }
 
-      if(!item.form.pristine) {
+      let elem = document.activeElement as any;
+      if(elem.form && elem.form.id === 'form' + item.tx.id + item.activeSplitIndex) {
+        // no blur if newly clicked element is in the same form
         return;
       }
 
-      let elem = document.activeElement as any;
-      if(elem.form && elem.form.id === 'form' + item.tx.id + item.activeSplitIndex) {
+      if(!item.form.pristine) {
+        // if there are changes, submit the form
+        $event.target.blur();
+        this.submit(item);
         return;
       }
 
@@ -523,6 +533,12 @@ export class TxListPage implements OnInit, AfterViewChecked {
     splits.push(control);
 
     this.fillEmptySplit(item);
+    // TODO how to focus newly created split in non-hacky way?
+    setTimeout(() => {
+      let rows: HTMLElement[] = Array.from(document.querySelectorAll('#form' + item.tx.id + item.activeSplitIndex + ' .row'));
+      let input: any = rows[rows.length - 1].querySelectorAll('.debit input')[0];
+      input && input.focus();
+    }, 10);
   }
 
   addFirstSplit(item: TxItem) {
@@ -765,6 +781,7 @@ export class TxListPage implements OnInit, AfterViewChecked {
   }
 
   onEnter(item, $event) {
+    item.preventBlur = true;
     $event.target.blur();
     this.submit(item);
   }
