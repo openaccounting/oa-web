@@ -15,7 +15,6 @@ export class Autocomplete {
   @Input() item: TxItem;
   @Input() accountId: string;
   @Output() tx = new EventEmitter<Transaction>();
-  @Output() interact = new EventEmitter<any>();
   public visible: boolean;
   public txs$: Observable<Transaction[]>;
 
@@ -65,11 +64,4 @@ export class Autocomplete {
     this.tx.emit(tx);
     this.visible = false;
   }
-
-  preventBlur() {
-    // used to notify parent that autocomplete has been interacted with and
-    // that it should not try to do any onBlur() stuff
-    this.interact.emit(true);
-  }
-
 }

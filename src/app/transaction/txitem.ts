@@ -9,6 +9,5 @@ export class TxItem {
   form: FormGroup;
   balance: number;
   editing: boolean;
-  preventBlur: boolean;
   edit$: Subject<any>;
 }
