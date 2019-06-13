@@ -36,16 +36,16 @@
           <div class="row" (click)="editTransaction(item, $event)" [ngClass]="{odd: !(i % 2), editing: item.editing}">
             <div class="col custom-3 date">
               <span *ngIf="!item.editing" class="date">{{item.tx.date | date:"M/d/y"}}</span>
-              <input *ngIf="item.editing" type="date" formControlName="date" placeholder="Date" class="form-control" (keyup.enter)="onEnter(item, $event)" (blur)="onBlur(item, $event)"/>
+              <input *ngIf="item.editing" type="date" formControlName="date" placeholder="Date" class="form-control" (keyup.enter)="onEnter(item, $event)"/>
             </div>
             <div class="col custom-7 description">
-              <div *ngIf="!item.editing">{{item.tx.description}}</div>
-              <input *ngIf="item.editing" type="text" formControlName="description" placeholder="Description" class="form-control" (keyup.enter)="onEnter(item, $event)" (blur)="onBlur(item, $event)"/>
-              <tx-autocomplete [item]="item" [accountId]="accountId" (tx)="autocomplete(item, $event)" (interact)="preventBlur(item)"></tx-autocomplete>
+              <div *ngIf="!item.editing" class="description">{{item.tx.description}}</div>
+              <input *ngIf="item.editing" type="text" formControlName="description" placeholder="Description" class="form-control" (keyup.enter)="onEnter(item, $event)"/>
+              <tx-autocomplete [item]="item" [accountId]="accountId" (tx)="autocomplete(item, $event)"></tx-autocomplete>
             </div>
             <div class="col custom-5 transfer">
               <span *ngIf="!item.editing" class="transfer">{{getTransferString(item) | slice:0:50}}</span>
-              <select *ngIf="item.editing" class="form-control" formControlName="accountId" [attr.disabled]="item.showSplits ? '' : null" (keyup.enter)="onEnter(item, $event)" (blur)="onBlur(item, $event)">
+              <select *ngIf="item.editing" class="form-control" formControlName="accountId" [attr.disabled]="item.showSplits ? '' : null" (keyup.enter)="onEnter(item, $event)">
                 <option *ngFor="let account of selectAccounts" [value]="account.id">
                   {{account.fullName | slice:0:50}}
                 </option>
@@ -53,11 +53,11 @@
             </div>
             <div class="col custom-3 debit">
               <span *ngIf="!item.editing" class="debit">{{getDebit(item) | currencyFormat:account.precision:account.currency}}</span>
-              <input *ngIf="item.editing" type="text" formControlName="debit" placeholder="Debit" class="form-control" (keyup.enter)="onEnter(item, $event)" (blur)="onBlur(item, $event)"/>
+              <input *ngIf="item.editing" type="text" formControlName="debit" placeholder="Debit" class="form-control" (keyup.enter)="onEnter(item, $event)"/>
             </div>
             <div class="col custom-3 credit">
               <span *ngIf="!item.editing" class="credit">{{getCredit(item) | currencyFormat:account.precision:account.currency}}</span>
-              <input *ngIf="item.editing" type="text" formControlName="credit" placeholder="Credit" class="form-control" (keyup.enter)="onEnter(item, $event)" (blur)="onBlur(item, $event)"/>
+              <input *ngIf="item.editing" type="text" formControlName="credit" placeholder="Credit" class="form-control" (keyup.enter)="onEnter(item, $event)"/>
             </div>
             <div class="col custom-3 balance" [ngClass]="{'negative': item.balance < 0}">
               <span *ngIf="!item.editing" class="balance">{{item.balance | currencyFormat:account.precision:account.currency}}</span>
@@ -70,33 +70,29 @@
                   <button *ngIf="item.tx.id" class="dropdown-item" (click)="deleteTransaction(item)">Delete</button>
                 </div>
               </div>
-  <!--             <a *ngIf="item.editing" [routerLink]="" (click)="addSplit(item)" (mousedown)="preventBlur(item)">Split</a><br/>
-              <a *ngIf="item.editing" [routerLink]="" (click)="advancedEdit(item)" (mousedown)="preventBlur(item)">Advanced Edit</a><br/>
-              <a *ngIf="item.editing && item.tx.id" [routerLink]="" (click)="deleteTransaction(item)" (mousedown)="preventBlur(item)">Delete</a> -->
             </div> 
           </div>
           <div class="row" *ngFor="let split of item.form.get('splits').controls; let i=index" [formGroup]="split">
             <div class="col custom-3">
             </div>
             <div class="col custom-7 add-split">
-              <a [routerLink]="" (click)="deleteSplit(item, i)" (mousedown)="preventBlur(item)">Remove Split</a>
+              <a [routerLink]="" (click)="deleteSplit(item, i)">Remove Split</a>
             </div>
             <div class="col custom-5">
-              <select class="form-control" formControlName="accountId" (keyup.enter)="onEnter(item, $event)" (blur)="onBlur(item, $event)">
+              <select class="form-control" formControlName="accountId" (keyup.enter)="onEnter(item, $event)">
                 <option *ngFor="let account of selectAccounts" [value]="account.id">
                   {{account.fullName}}
                 </option>
               </select>
             </div>
             <div class="col custom-3 debit">
-              <input type="text" formControlName="debit" placeholder="Debit" class="form-control" (keyup.enter)="onEnter(item, $event)" (blur)="onBlur(item, $event)"/>
+              <input type="text" formControlName="debit" placeholder="Debit" class="form-control" (keyup.enter)="onEnter(item, $event)"/>
             </div>
             <div class="col custom-3 credit">
-              <input type="text" formControlName="credit" placeholder="Credit" class="form-control" (keyup.enter)="onEnter(item, $event)" (blur)="onBlur(item, $event)"/>
+              <input type="text" formControlName="credit" placeholder="Credit" class="form-control" (keyup.enter)="onEnter(item, $event)"/>
             </div>
             <div class="col custom-3 add-split">
               <a *ngIf="i === item.form.get('splits').controls.length - 1" [routerLink]="" (click)="addSplit(item)">Add Split</a>
-              <!-- <button type="submit">hidden submit</button> -->
             </div>
           </div>
         </form>

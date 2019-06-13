@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild, ElementRef, AfterViewChecked, Renderer } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ElementRef, AfterViewChecked, Renderer, HostListener} from '@angular/core';
 import { Logger } from '../core/logger';
 import { ActivatedRoute } from '@angular/router';
 import { TransactionService } from '../core/transaction.service';
@@ -57,7 +57,8 @@ export class TxListPage implements OnInit, AfterViewChecked {
     private accountService: AccountService,
     private fb: FormBuilder,
     private renderer: Renderer,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private eRef: ElementRef
   ) {
     this.items = [];
     this.limit = 50;
@@ -120,6 +121,42 @@ export class TxListPage implements OnInit, AfterViewChecked {
     this.scrollSubject.debounceTime(100).subscribe(obj => {
       if(obj.percent < 0.2 && !this.fetching && !this.historyFinished) {
         this.fetchMoreTransactions();
+      }
+    });
+  }
+
+  @HostListener('document:click', ['$event'])
+  clickout(event) {
+    let clickedForm = false;
+    let txId = undefined;
+    let autocomplete = false;
+    event.path.forEach((elem) => {
+      if(elem.classList && elem.classList.contains('autocomplete')) {
+        autocomplete = true;
+      }
+      if(elem.id && elem.id.indexOf('form') === 0) {
+        clickedForm = true;
+        if(elem.id.indexOf('undefined') === -1) {
+          txId = elem.id.substring(4, 36);
+        }
+      }
+    });
+
+    if(autocomplete) {
+      return;
+    }
+
+    this.items.forEach(item => {
+      if(item.editing && (item.tx.id !== txId || !clickedForm)) {
+        if(!item.form.pristine) {
+          this.submit(item);
+        }
+
+        item.form = this.fb.group({
+          splits: this.fb.array([])
+        });
+
+        item.editing = false;
       }
     });
   }
@@ -446,49 +483,6 @@ export class TxListPage implements OnInit, AfterViewChecked {
     // })
     item.edit$.next(null);
   }
-
-  preventBlur(item: TxItem) {
-    this.log.debug('prevent blur');
-    item.preventBlur = true;
-  }
-
-  onBlur(item: TxItem, $event) {
-    this.log.debug('blur2');
-    let elem = document.activeElement as any;
-
-    if(elem.form && elem.form.id === 'form' + item.tx.id + item.activeSplitIndex) {
-      // no blur if newly clicked element is in the same form
-      return;
-    }
-
-    setTimeout(() => {
-      this.log.debug('blur', item.form.pristine);
-      if(item.preventBlur) {
-        item.preventBlur = false;
-        return;
-      }
-
-      let elem = document.activeElement as any;
-      if(elem.form && elem.form.id === 'form' + item.tx.id + item.activeSplitIndex) {
-        // no blur if newly clicked element is in the same form
-        return;
-      }
-
-      if(!item.form.pristine) {
-        // if there are changes, submit the form
-        $event.target.blur();
-        this.submit(item);
-        return;
-      }
-
-      item.form = this.fb.group({
-        splits: this.fb.array([])
-      });
-
-      item.editing = false;
-    }, 100); // timeout needs to be longer than in editTransaction
-  }
-
   deleteSplit(item: TxItem, index) {
     item.form.markAsDirty();
     this.log.debug('delete split');
@@ -623,6 +617,7 @@ export class TxListPage implements OnInit, AfterViewChecked {
     this.log.debug(item.form.value);
 
     if(item.form.pristine) {
+      item.editing = false;
       return;
     }
 
@@ -781,8 +776,6 @@ export class TxListPage implements OnInit, AfterViewChecked {
   }
 
   onEnter(item, $event) {
-    item.preventBlur = true;
-    $event.target.blur();
     this.submit(item);
   }
 
@@ -851,6 +844,7 @@ export class TxListPage implements OnInit, AfterViewChecked {
     let formDate = Util.getDateFromLocalDateString(item.form.value.date);
     item.tx = new Transaction(
       {
+        id: item.tx.id,
         date: this.computeTransactionDate(formDate, new Date()),
         description: tx.description,
         splits: tx.splits
@@ -871,7 +865,6 @@ export class TxListPage implements OnInit, AfterViewChecked {
     this.log.debug(tx);
 
     item.editing = false;
-    item.preventBlur = true;
     this.editTransaction(item, {target: {className: 'description', classList: ['description']}});
     item.form.markAsDirty();
   }
