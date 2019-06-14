@@ -776,6 +776,7 @@ export class TxListPage implements OnInit, AfterViewChecked {
   }
 
   onEnter(item, $event) {
+    $event.target.blur();
     this.submit(item);
   }
 
