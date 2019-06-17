@@ -63,7 +63,7 @@ export class BalanceSheetReport {
     }
 
     this.form = fb.group({
-      date: [Util.getLocalDateString(this.date), Validators.required],
+      date: [Util.getLocalDateStringExcl(this.date), Validators.required],
       priceSource: [this.priceSource, Validators.required]
     });
   }
@@ -133,7 +133,7 @@ export class BalanceSheetReport {
     this.treeSubscription.unsubscribe();
     //this.dataService.setLoading(true);
     this.showOptionsForm = false;
-    this.date = Util.getDateFromLocalDateString(this.form.value.date);
+    this.date = Util.getDateFromLocalDateStringExcl(this.form.value.date);
     this.priceSource = this.form.value.priceSource;
 
     let reportData = this.configService.get('reportData');

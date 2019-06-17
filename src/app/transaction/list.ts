@@ -624,7 +624,7 @@ export class TxListPage implements OnInit, AfterViewChecked {
     let date = item.tx.id ? item.tx.date : new Date();
     let formDate = Util.getDateFromLocalDateString(item.form.value.date);
 
-    date = this.computeTransactionDate(formDate, date);
+    date = Util.computeTransactionDate(formDate, date);
 
     let tx = new Transaction({
       id: item.tx.id,
@@ -731,23 +731,6 @@ export class TxListPage implements OnInit, AfterViewChecked {
     }
   }
 
-  computeTransactionDate(formDate: Date, txDate: Date): Date {
-    if(formDate.getTime()) {
-      // make the time be at the very end of the day
-      formDate.setHours(23, 59, 59, 999);
-    }
-
-    let sameDay = formDate.getFullYear() === txDate.getFullYear() &&
-      formDate.getMonth() === txDate.getMonth() &&
-      formDate.getDate() === txDate.getDate();
-
-    if(formDate.getTime() && !sameDay) {
-      txDate = formDate;
-    }
-
-    return txDate;
-  }
-
   deleteTransaction(item) {
     this.modalService.open(this.confirmDeleteModal).result.then((result) => {
       this.log.debug('delete');
@@ -846,7 +829,7 @@ export class TxListPage implements OnInit, AfterViewChecked {
     item.tx = new Transaction(
       {
         id: item.tx.id,
-        date: this.computeTransactionDate(formDate, new Date()),
+        date: Util.computeTransactionDate(formDate, new Date()),
         description: tx.description,
         splits: tx.splits
       }

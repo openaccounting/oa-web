@@ -45,10 +45,9 @@ export class IncomeReport {
     private configService: ConfigService,
     private sessionService: SessionService) {
     this.startDate = new Date();
-    this.startDate.setDate(1);
-    this.startDate.setHours(0, 0, 0, 0);
-    this.endDate = new Date(this.startDate);
-    this.endDate.setMonth(this.startDate.getMonth() + 1);
+    Util.setFirstOfMonth(this.startDate);
+    Util.setBeginOfDay(this.startDate);
+    this.endDate = Util.getOneMonthLater(this.startDate);
 
     let reportData = this.configService.get('reportData');
 
@@ -65,7 +64,7 @@ export class IncomeReport {
 
     this.form = fb.group({
       startDate: [Util.getLocalDateString(this.startDate), Validators.required],
-      endDate: [Util.getLocalDateString(new Date(this.endDate.getTime() - 1)), Validators.required]
+      endDate: [Util.getLocalDateStringExcl(this.endDate), Validators.required]
     });
   }
 
@@ -92,8 +91,7 @@ export class IncomeReport {
     //this.dataService.setLoading(true);
     this.showDateForm = false;
     this.startDate = Util.getDateFromLocalDateString(this.form.value.startDate);
-    this.endDate = Util.getDateFromLocalDateString(this.form.value.endDate);
-    this.endDate.setDate(this.endDate.getDate() + 1);
+    this.endDate = Util.getDateFromLocalDateStringExcl(this.form.value.endDate);
 
     let reportData = this.configService.get('reportData');
 
