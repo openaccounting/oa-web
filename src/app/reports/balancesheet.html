@@ -1,4 +1,4 @@
-<h1>Balance Sheet<br>{{date | date:"shortDate"}} (<a [routerLink]="" (click)="toggleShowOptionsForm()">options</a>)</h1>
+<h1>Balance Sheet<br>{{date.getTime() - 1 | datetz:"M/D/YYYY":org.timezone}} (<a [routerLink]="" (click)="toggleShowOptionsForm()">options</a>)</h1>
 
 <div class="section">
   <div *ngIf="showOptionsForm" class="card card-body">

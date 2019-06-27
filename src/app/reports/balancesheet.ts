@@ -62,15 +62,16 @@ export class BalanceSheetReport {
       }
     }
 
+    this.org = this.orgService.getCurrentOrg();
+
     this.form = fb.group({
-      date: [Util.getLocalDateStringExcl(this.date), Validators.required],
+      date: [Util.getLocalDateStringExcl(this.date, this.org.timezone), Validators.required],
       priceSource: [this.priceSource, Validators.required]
     });
   }
 
   ngOnInit() {
     this.sessionService.setLoading(true);
-    this.org = this.orgService.getCurrentOrg();
     this.amounts = {};
     this.assetAccount = null;
 
@@ -133,7 +134,7 @@ export class BalanceSheetReport {
     this.treeSubscription.unsubscribe();
     //this.dataService.setLoading(true);
     this.showOptionsForm = false;
-    this.date = Util.getDateFromLocalDateStringExcl(this.form.value.date);
+    this.date = Util.getDateFromLocalDateStringExcl(this.form.value.date, this.org.timezone);
     this.priceSource = this.form.value.priceSource;
 
     let reportData = this.configService.get('reportData');

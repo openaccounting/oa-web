@@ -2,6 +2,7 @@ import { Component, Input, OnInit, ViewChild, ElementRef, AfterViewChecked, Rend
 import { Logger } from '../core/logger';
 import { ActivatedRoute } from '@angular/router';
 import { TransactionService } from '../core/transaction.service';
+import { OrgService } from '../core/org.service';
 import { AccountService } from '../core/account.service';
 import { Account, AccountTree } from '../shared/account';
 import { Transaction, Split} from '../shared/transaction';
@@ -22,6 +23,7 @@ import 'rxjs/add/operator/mergeMap';
 import { AdvancedEdit } from './advancededit';
 import { TxItem } from './txitem';
 import { Subject } from 'rxjs';
+import { Org } from '../shared/org';
 
 @Component({
   selector: 'app-txlist',
@@ -34,6 +36,7 @@ export class TxListPage implements OnInit, AfterViewChecked {
   public account: Account;
   public items: TxItem[];
   public error: AppError;
+  public org: Org;
   private accountId: string;
   private accountTree: AccountTree;
   private balance: number;
@@ -54,6 +57,7 @@ export class TxListPage implements OnInit, AfterViewChecked {
     private log: Logger,
     private route: ActivatedRoute,
     private txService: TransactionService,
+    private orgService: OrgService,
     private accountService: AccountService,
     private fb: FormBuilder,
     private renderer: Renderer,
@@ -70,6 +74,9 @@ export class TxListPage implements OnInit, AfterViewChecked {
 
   ngOnInit() {
     this.accountId = this.route.snapshot.paramMap.get('id'); //+this.route.snapshot.paramMap.get('id');
+    this.org = this.orgService.getCurrentOrg();
+
+    console.log(this.org);
 
     this.accountService.getAccountTree().subscribe(tree => {
       this.account = tree.accountMap[this.accountId];
@@ -88,7 +95,7 @@ export class TxListPage implements OnInit, AfterViewChecked {
           splits: []
         });
 
-        newTx.date.setHours(23, 59, 59, 999);
+        Util.setEndOfDay(newTx.date, this.org.timezone);
 
         newTx.splits.push(new Split({
           accountId: this.account.id
@@ -403,7 +410,7 @@ export class TxListPage implements OnInit, AfterViewChecked {
 
     item.editing = true;
 
-    let dateString = Util.getLocalDateString(item.tx.date);
+    let dateString = Util.getLocalDateString(item.tx.date, this.org.timezone);
 
     this.log.debug(item);
     let debit = this.getDebit(item);
@@ -622,9 +629,9 @@ export class TxListPage implements OnInit, AfterViewChecked {
     }
 
     let date = item.tx.id ? item.tx.date : new Date();
-    let formDate = Util.getDateFromLocalDateString(item.form.value.date);
+    let formDate = Util.getDateFromLocalDateString(item.form.value.date, this.org.timezone);
 
-    date = Util.computeTransactionDate(formDate, date);
+    date = Util.computeTransactionDate(formDate, date, this.org.timezone);
 
     let tx = new Transaction({
       id: item.tx.id,
@@ -707,7 +714,7 @@ export class TxListPage implements OnInit, AfterViewChecked {
         splits: []
       });
 
-      newTx.date.setHours(23, 59, 59, 999);
+      Util.setEndOfDay(newTx.date, this.org.timezone);
 
       newTx.splits.push(new Split({
         accountId: this.account.id
@@ -825,11 +832,11 @@ export class TxListPage implements OnInit, AfterViewChecked {
   autocomplete(item: TxItem, tx: Transaction) {
     this.log.debug('chose tx', tx);
 
-    let formDate = Util.getDateFromLocalDateString(item.form.value.date);
+    let formDate = Util.getDateFromLocalDateString(item.form.value.date, this.org.timezone);
     item.tx = new Transaction(
       {
         id: item.tx.id,
-        date: Util.computeTransactionDate(formDate, new Date()),
+        date: Util.computeTransactionDate(formDate, new Date(), this.org.timezone),
         description: tx.description,
         splits: tx.splits
       }

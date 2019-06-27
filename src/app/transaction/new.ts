@@ -17,6 +17,7 @@ import { Util } from '../shared/util';
 import { AppError } from '../shared/error';
 import { Transaction, Split } from '../shared/transaction';
 import { Logger } from '../core/logger';
+import { Org } from '../shared/org';
 
 @Component({
   selector: 'app-txnew',
@@ -45,6 +46,7 @@ export class NewTransactionPage {
   public openingBalances: Account;
   public accountTree: AccountTree;
   public accountMap: any;
+  public org;
   @ViewChild('acc') acc: any;
   @ViewChild('amount') amount: ElementRef
 
@@ -57,12 +59,10 @@ export class NewTransactionPage {
     private orgService: OrgService,
     private fb: FormBuilder,
     private log: Logger) {
-
     this.numAccountsShown = 3;
+    this.org = this.orgService.getCurrentOrg();
 
-    let org = this.orgService.getCurrentOrg();
-
-    let dateString = Util.getLocalDateString(new Date());
+    let dateString = Util.getLocalDateString(new Date(), this.org.timezone);
     this.form = this.fb.group({
       type: ['', Validators.required],
       firstAccountPrimary: [null, Validators.required],
@@ -226,20 +226,9 @@ export class NewTransactionPage {
     this.error = null;
 
     let date = new Date();
-    let formDate = Util.getDateFromLocalDateString(this.form.value.date);
+    let formDate = Util.getDateFromLocalDateString(this.form.value.date, this.org.timezone);
 
-    if (formDate.getTime()) {
-      // make the time be at the very end of the day
-      formDate.setHours(23, 59, 59, 999);
-    }
-
-    let sameDay = formDate.getFullYear() === date.getFullYear() &&
-      formDate.getMonth() === date.getMonth() &&
-      formDate.getDate() === date.getDate();
-
-    if (formDate.getTime() && !sameDay) {
-      date = formDate;
-    }
+    date = Util.computeTransactionDate(formDate, date, this.org.timezone);
 
     let tx = new Transaction({
       id: Util.newGuid(),

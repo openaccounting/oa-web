@@ -17,7 +17,7 @@
       <ng-container *ngIf="isExpanded(currency)">
         <div class="row" *ngFor="let price of prices$[currency] | async" depth="2">
           <div class="col-4 date">
-            {{price.date | date:"M/d/y"}}
+            {{price.date | datetz:"M/D/YYYY":org.timezone}}
           </div>
           <div class="col-4 price">
             {{price.price * multiplier | currencyFormat:org.precision:org.currency}}

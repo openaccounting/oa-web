@@ -13,6 +13,8 @@ import {
 import { Util } from '../shared/util';
 import { PriceService } from '../core/price.service';
 import { Price } from '../shared/price';
+import { SessionService } from '../core/session.service';
+import { Org } from '../shared/org';
 import { Observable } from 'rxjs/Observable';
 
 @Component({
@@ -23,15 +25,18 @@ import { Observable } from 'rxjs/Observable';
 export class PriceModal {
   public form: FormGroup;
   public error: AppError;
+  public org: Org;
   private originalDate: Date;
 
   constructor(
     public activeModal: NgbActiveModal,
     private log: Logger,
     private priceService: PriceService,
+    private sessionService: SessionService,
     private fb: FormBuilder
   ) {
-    let dateString = Util.getLocalDateString(new Date());
+    this.org = this.sessionService.getOrg();
+    let dateString = Util.getLocalDateString(new Date(), this.org.timezone);
 
     this.form = fb.group({
       'id': [null],
@@ -47,7 +52,7 @@ export class PriceModal {
     this.form.patchValue({
       id: data.id,
       currency: data.currency,
-      date: Util.getLocalDateString(data.date),
+      date: Util.getLocalDateString(data.date, this.org.timezone),
       price: data.price
     });
   }
@@ -56,18 +61,11 @@ export class PriceModal {
     this.error = null;
 
     let date = this.form.value.id ? this.originalDate : new Date();
-    let formDate = Util.getDateFromLocalDateString(this.form.value.date);
+    let formDate = Util.getDateFromLocalDateString(this.form.value.date, this.org.timezone);
 
-    if(formDate.getTime()) {
+    if(formDate.getTime() && !Util.isSameDay(date, formDate, this.org.timezone)) {
       // make the time be at the very end of the day
-      formDate.setHours(23, 59, 59, 999);
-    }
-
-    let sameDay = formDate.getFullYear() === date.getFullYear() &&
-      formDate.getMonth() === date.getMonth() &&
-      formDate.getDate() === date.getDate();
-
-    if(formDate.getTime() && !sameDay) {
+      Util.setEndOfDay(formDate, this.org.timezone);
       date = formDate;
     }
 

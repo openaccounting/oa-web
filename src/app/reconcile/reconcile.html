@@ -53,7 +53,7 @@
   <h2>Past Reconciliations</h2>
 
   <div *ngFor="let rec of pastReconciliations; index as i">
-    Period: {{rec.startDate | date:"M/d/y"}} - {{rec.endDate | date:"M/d/y"}}<br>
+    Period: {{rec.startDate | datetz:"M/D/YYYY":org.timezone}} - {{rec.endDate | datetz:"M/D/YYYY":org.timezone}}<br>
     Beginning Balance: {{rec.startBalance | currencyFormat:account.precision:account.currency}}<br>
     Ending Balance: {{rec.endBalance | currencyFormat:account.precision:account.currency}}<br>
     <a *ngIf="i === 0" [routerLink]="" (click)="delete()">Delete</a>

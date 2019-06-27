@@ -14,6 +14,7 @@ import { OrgService } from '../core/org.service';
 import { TransactionService } from '../core/transaction.service';
 import { Account, AccountApi, AccountTree } from '../shared/account';
 import { Transaction } from '../shared/transaction';
+import { Org } from '../shared/org';
 import { AppError } from '../shared/error';
 import { Util } from '../shared/util';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
@@ -37,6 +38,7 @@ export class ReconcilePage {
   public pastReconciliations: Reconciliation[];
   public unreconciledTxs: Transaction[];
   public error: AppError;
+  public org: Org;
   private accountTree: AccountTree;
   @ViewChild('confirmDeleteModal') confirmDeleteModal: ElementRef;
 
@@ -50,7 +52,7 @@ export class ReconcilePage {
     private modalService: NgbModal,
     private sessionService: SessionService) {
 
-    let org = this.orgService.getCurrentOrg();
+    this.org = this.orgService.getCurrentOrg();
     this.accountForm = fb.group({
       'accountId': [null, Validators.required]
     });
@@ -85,8 +87,8 @@ export class ReconcilePage {
     let value = this.newReconcile.getRawValue();
 
     let rec = new Reconciliation();
-    rec.startDate = Util.getDateFromLocalDateString(value.startDate);
-    rec.endDate = Util.getDateFromLocalDateString(value.endDate);
+    rec.startDate = Util.getDateFromLocalDateString(value.startDate, this.org.timezone);
+    rec.endDate = Util.getDateFromLocalDateString(value.endDate, this.org.timezone);
     rec.startBalance = Math.round(parseFloat(value.startBalance) * Math.pow(10, this.account.precision));
     rec.endBalance = Math.round(parseFloat(value.endBalance) * Math.pow(10, this.account.precision));
 
@@ -104,7 +106,7 @@ export class ReconcilePage {
 
       this.newReconcile.patchValue(
         {
-          startDate: Util.getLocalDateString(rec.endDate),
+          startDate: Util.getLocalDateString(rec.endDate, this.org.timezone),
           startBalance: rec.endBalance / Math.pow(10, this.account.precision),
           endBalance: 0,
           endDate: ''
@@ -201,7 +203,7 @@ export class ReconcilePage {
 
       if(!dates.length) {
         if(firstStartDate) {
-          this.newReconcile.patchValue({startDate: Util.getLocalDateString(firstStartDate)});
+          this.newReconcile.patchValue({startDate: Util.getLocalDateString(firstStartDate, this.org.timezone)});
         }
         return;
       }
@@ -226,7 +228,7 @@ export class ReconcilePage {
 
       this.newReconcile.patchValue(
         {
-          startDate: Util.getLocalDateString(lastRec.endDate),
+          startDate: Util.getLocalDateString(lastRec.endDate, this.org.timezone),
           startBalance: lastRec.endBalance / Math.pow(10, this.account.precision)
         }
       );
@@ -270,7 +272,7 @@ export class ReconcilePage {
         if(lastRec) {
           this.newReconcile.patchValue(
             {
-              startDate: Util.getLocalDateString(lastRec.endDate),
+              startDate: Util.getLocalDateString(lastRec.endDate, this.org.timezone),
               startBalance: lastRec.endBalance / Math.pow(10, this.account.precision)
             }
           );

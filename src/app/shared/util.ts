@@ -4,8 +4,8 @@ import * as moment from 'moment-timezone';
 const defaultTz = moment.tz.guess();
 
 export class Util {
-  static getLocalDateString(input: Date, tz: string = defaultTz) {
-    let m = moment(input).tz(tz);
+  static getLocalDateString(input: Date, tz: string) {
+    let m = moment(input).tz(tz || defaultTz);
 
     let year = m.format('YYYY');
     let month = m.format('MM');
@@ -22,8 +22,8 @@ export class Util {
     return year + '-' + month + '-' + date;
   }
 
-  static getLocalDateStringExcl(input: Date, tz: string = defaultTz) {
-    let m = moment(input.getTime() - 1).tz(tz);
+  static getLocalDateStringExcl(input: Date, tz: string) {
+    let m = moment(input.getTime() - 1).tz(tz || defaultTz);
 
     let year = m.format('YYYY');
     let month = m.format('MM');
@@ -40,10 +40,10 @@ export class Util {
     return year + '-' + month + '-' + date;
   }
 
-  static getDateFromLocalDateString(input: string, tz: string = defaultTz) {
+  static getDateFromLocalDateString(input: string, tz: string) {
     let parts = input.split('-');
 
-    let m = moment().tz(tz);
+    let m = moment().tz(tz || defaultTz);
     m.hours(0);
     m.minutes(0);
     m.seconds(0);
@@ -55,10 +55,10 @@ export class Util {
     return m.toDate();
   }
 
-  static getDateFromLocalDateStringExcl(input: string, tz: string = defaultTz) {
+  static getDateFromLocalDateStringExcl(input: string, tz: string) {
     let parts = input.split('-');
 
-    let m = moment().tz(tz);
+    let m = moment().tz(tz || defaultTz);
     m.hours(0);
     m.minutes(0);
     m.seconds(0);
@@ -70,15 +70,15 @@ export class Util {
     return m.toDate();
   }
 
-  static setFirstOfMonth(input: Date, tz: string = defaultTz) {
-    let m = moment(input).tz(tz);
+  static setFirstOfMonth(input: Date, tz: string) {
+    let m = moment(input).tz(tz || defaultTz);
 
     m.date(1);
     input.setTime(m.valueOf());
   }
 
-  static setBeginOfDay(input: Date, tz: string = defaultTz) {
-    let m = moment(input).tz(tz);
+  static setBeginOfDay(input: Date, tz: string) {
+    let m = moment(input).tz(tz || defaultTz);
 
     m.hours(0);
     m.minutes(0);
@@ -87,8 +87,8 @@ export class Util {
     input.setTime(m.valueOf());
   }
 
-  static setEndOfDay(input: Date, tz: string = defaultTz) {
-    let m = moment(input).tz(tz);
+  static setEndOfDay(input: Date, tz: string) {
+    let m = moment(input).tz(tz || defaultTz);
 
     m.hours(23);
     m.minutes(59);
@@ -97,21 +97,21 @@ export class Util {
     input.setTime(m.valueOf());
   }
 
-  static getOneMonthLater(input: Date, tz: string = defaultTz): Date {
-    let m = moment(input).tz(tz);
+  static getOneMonthLater(input: Date, tz: string): Date {
+    let m = moment(input).tz(tz || defaultTz);
 
     m.month(m.month() + 1);
 
     return m.toDate();
   }
 
-  static computeTransactionDate(formDate: Date, txDate: Date, tz: string = defaultTz): Date {
+  static computeTransactionDate(formDate: Date, txDate: Date, tz: string): Date {
     if(!formDate || !formDate.getTime()) {
       return txDate;
     }
 
-    let formMoment = moment(formDate).tz(tz);
-    let txMoment = moment(txDate).tz(tz);
+    let formMoment = moment(formDate).tz(tz || defaultTz);
+    let txMoment = moment(txDate).tz(tz || defaultTz);
 
     // make the time be at the very end of the day
     formMoment.hours(23);
@@ -123,11 +123,45 @@ export class Util {
       formMoment.month() === txMoment.month() &&
       formMoment.date() === txMoment.date();
 
-    if(!sameDay) {
-      return formMoment.toDate();
+    if(sameDay) {
+      return txDate;
     }
 
-    return txDate;
+    if(formDate < txDate) {
+      // make time end of day for past dates
+      formMoment.hours(23);
+      formMoment.minutes(59);
+      formMoment.seconds(59);
+      formMoment.milliseconds(999);
+    } else {
+      // make time beginning of day for future dates
+      formMoment.hours(0);
+      formMoment.minutes(0);
+      formMoment.seconds(0);
+      formMoment.milliseconds(0);
+    }
+
+    return formMoment.toDate();
+  }
+
+  static isSameDay(date1: Date, date2: Date, tz: string) {
+    let m1 = moment(date1).tz(tz || defaultTz);
+    let m2 = moment(date2).tz(tz || defaultTz);
+
+    return m1.year() === m2.year() &&
+      m1.month() === m2.month() &&
+      m1.date() === m2.date();
+  }
+
+  static getPeriodStart(tz: string): Date {
+    let m = moment().tz(tz || defaultTz);
+    m.date(1);
+    m.hours(0);
+    m.minutes(0);
+    m.seconds(0);
+    m.milliseconds(0);
+
+    return m.toDate();
   }
 
   static newGuid() {
