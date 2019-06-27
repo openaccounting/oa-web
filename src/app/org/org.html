@@ -36,7 +36,7 @@
     <button class="btn btn-primary" type="submit" [disabled]="!updateOrgForm.valid">Save Changes</button>
   </form>
 
-  <h2>Choose Organization</h2>
+  <h2>Switch Organization</h2>
 
   <form [formGroup]="chooseOrgForm" (ngSubmit)="chooseOrgSubmit()">
     <div class="form-group row">
@@ -50,7 +50,7 @@
       </div>
     </div>
     <p *ngIf="chooseOrgError" class="error">{{chooseOrgError.message}}</p>
-    <button class="btn btn-primary" type="submit" [disabled]="!chooseOrgForm.valid">Update</button>
+    <button class="btn btn-primary" type="submit" [disabled]="!chooseOrgForm.valid">Select</button>
   </form>
 </div>
 
