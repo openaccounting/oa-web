@@ -14,6 +14,7 @@ import { Org } from '../shared/org';
 import { Invite } from '../shared/invite';
 import { AppError } from '../shared/error';
 import { Util } from '../shared/util';
+import { DateUtil } from '../shared/dateutil';
 
 @Component({
   selector: 'app-org',
@@ -42,8 +43,8 @@ export class OrgPage {
     private fb: FormBuilder
    ) {
 
-    this.timezones = Util.getTimezones();
-    this.defaultTz = Util.getDefaultTimezone();
+    this.timezones = DateUtil.getTimezones();
+    this.defaultTz = DateUtil.getDefaultTimezone();
 
     console.log('defaultTz', this.defaultTz);
     this.invites = null;

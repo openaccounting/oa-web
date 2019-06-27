@@ -14,6 +14,7 @@ import { TransactionService } from '../core/transaction.service';
 import { OrgService } from '../core/org.service';
 import { Account, AccountApi, AccountTree } from '../shared/account';
 import { Util } from '../shared/util';
+import { DateUtil } from '../shared/dateutil';
 import { AppError } from '../shared/error';
 import { Transaction, Split } from '../shared/transaction';
 import { Logger } from '../core/logger';
@@ -62,7 +63,7 @@ export class NewTransactionPage {
     this.numAccountsShown = 3;
     this.org = this.orgService.getCurrentOrg();
 
-    let dateString = Util.getLocalDateString(new Date(), this.org.timezone);
+    let dateString = DateUtil.getLocalDateString(new Date(), this.org.timezone);
     this.form = this.fb.group({
       type: ['', Validators.required],
       firstAccountPrimary: [null, Validators.required],
@@ -226,9 +227,9 @@ export class NewTransactionPage {
     this.error = null;
 
     let date = new Date();
-    let formDate = Util.getDateFromLocalDateString(this.form.value.date, this.org.timezone);
+    let formDate = DateUtil.getDateFromLocalDateString(this.form.value.date, this.org.timezone);
 
-    date = Util.computeTransactionDate(formDate, date, this.org.timezone);
+    date = DateUtil.computeTransactionDate(formDate, date, this.org.timezone);
 
     let tx = new Transaction({
       id: Util.newGuid(),

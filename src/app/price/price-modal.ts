@@ -11,6 +11,7 @@ import {
   AbstractControl
 } from '@angular/forms';
 import { Util } from '../shared/util';
+import { DateUtil } from '../shared/dateutil';
 import { PriceService } from '../core/price.service';
 import { Price } from '../shared/price';
 import { SessionService } from '../core/session.service';
@@ -36,7 +37,7 @@ export class PriceModal {
     private fb: FormBuilder
   ) {
     this.org = this.sessionService.getOrg();
-    let dateString = Util.getLocalDateString(new Date(), this.org.timezone);
+    let dateString = DateUtil.getLocalDateString(new Date(), this.org.timezone);
 
     this.form = fb.group({
       'id': [null],
@@ -52,7 +53,7 @@ export class PriceModal {
     this.form.patchValue({
       id: data.id,
       currency: data.currency,
-      date: Util.getLocalDateString(data.date, this.org.timezone),
+      date: DateUtil.getLocalDateString(data.date, this.org.timezone),
       price: data.price
     });
   }
@@ -61,11 +62,11 @@ export class PriceModal {
     this.error = null;
 
     let date = this.form.value.id ? this.originalDate : new Date();
-    let formDate = Util.getDateFromLocalDateString(this.form.value.date, this.org.timezone);
+    let formDate = DateUtil.getDateFromLocalDateString(this.form.value.date, this.org.timezone);
 
-    if(formDate.getTime() && !Util.isSameDay(date, formDate, this.org.timezone)) {
+    if(formDate.getTime() && !DateUtil.isSameDay(date, formDate, this.org.timezone)) {
       // make the time be at the very end of the day
-      Util.setEndOfDay(formDate, this.org.timezone);
+      DateUtil.setEndOfDay(formDate, this.org.timezone);
       date = formDate;
     }
 

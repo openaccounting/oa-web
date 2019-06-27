@@ -13,7 +13,6 @@ import { PriceService } from '../core/price.service';
 import { Price } from '../shared/price';
 import { Org } from '../shared/org';
 import { AppError } from '../shared/error';
-import { Util } from '../shared/util';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/forkJoin';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';

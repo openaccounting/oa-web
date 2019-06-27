@@ -7,7 +7,7 @@ import { SessionService } from '../core/session.service';
 import { Transaction, Split } from '../shared/transaction';
 import { Org } from '../shared/org';
 import { Account, AccountTree } from '../shared/account';
-import { Util } from '../shared/util';
+import { DateUtil } from '../shared/dateutil';
 import { TxListPage } from '../transaction/list';
 import { IncomeReport } from '../reports/income';
 import { Observable } from 'rxjs/Observable';
@@ -51,7 +51,7 @@ export class DashboardPage implements OnInit {
     this.org = this.orgService.getCurrentOrg();
     this.log.debug('org', this.org);
 
-    let periodStart = Util.getPeriodStart(this.org.timezone);
+    let periodStart = DateUtil.getPeriodStart(this.org.timezone);
 
     let tree$ = this.accountService.getAccountTreeWithPeriodBalance(periodStart);
 
