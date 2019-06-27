@@ -59,6 +59,14 @@ export class OrgService {
       });
   }
 
+  updateOrg(org: Org): Observable<Org> {
+    return this.apiService.putOrg(org)
+      .do(org => {
+        this.org = org;
+        this.sessionService.switchOrg(this.org);
+      })
+  }
+
   getInvites(): Observable<Invite[]> {
     return this.apiService.getInvites();
   }

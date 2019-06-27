@@ -1,6 +1,41 @@
 <h1>Organization</h1>
 
 <div class="section">
+  <h2>Current Organization</h2>
+
+  <form [formGroup]="updateOrgForm" (ngSubmit)="updateOrgSubmit()">
+    <div class="form-group row">
+      <label for="name" class="col-sm-3 col-form-label">Name</label>
+      <div class="col-sm-9">
+        <input formControlName="name" type="text" class="form-control" id="name" placeholder="Organization name">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="currency" class="col-sm-3 col-form-label">Currency</label>
+      <div class="col-sm-9">
+        <input formControlName="currency" type="text" class="form-control" id="currency" placeholder="Currency">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="precision" class="col-sm-3 col-form-label">Decimal Places</label>
+      <div class="col-sm-9">
+        <input formControlName="precision" type="text" class="form-control" id="precision" placeholder="Decimal Places">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="timezone" class="col-sm-3 col-form-label">Timezone</label>
+      <div class="col-sm-9">
+        <select class="form-control" id="timezone" formControlName="timezone">
+          <option *ngFor="let tz of timezones" [value]="tz">
+            {{tz}}
+          </option>
+        </select>
+      </div>
+    </div>
+    <p *ngIf="updateOrgError" class="error">{{updateOrgError.message}}</p>
+    <button class="btn btn-primary" type="submit" [disabled]="!updateOrgForm.valid">Save Changes</button>
+  </form>
+
   <h2>Choose Organization</h2>
 
   <form [formGroup]="chooseOrgForm" (ngSubmit)="chooseOrgSubmit()">
@@ -101,6 +136,16 @@
       <label for="precision" class="col-sm-3 col-form-label">Decimal Places</label>
       <div class="col-sm-9">
         <input formControlName="precision" type="text" class="form-control" id="precision" placeholder="Decimal Places">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="timezone" class="col-sm-3 col-form-label">Timezone</label>
+      <div class="col-sm-9">
+        <select class="form-control" id="timezone" formControlName="timezone">
+          <option *ngFor="let tz of timezones" [value]="tz">
+            {{tz}}
+          </option>
+        </select>
       </div>
     </div>
     <div class="form-group row">

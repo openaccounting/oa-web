@@ -231,6 +231,11 @@ export class ApiService {
       .pipe(catchError(this.handleError));
   }
 
+  putOrg(org: Org): Observable<Org> {
+    return this.http.put<Org>(this.url + '/orgs/' + this.orgId, org, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
   getPricesNearestInTime(date: Date): Observable<Price[]> {
     let query = '/orgs/' + this.orgId + '/prices?nearestDate=' + date.getTime();
     return this.http.get<Price[]>(this.url + query, this.httpOptions)

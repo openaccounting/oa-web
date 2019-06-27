@@ -164,6 +164,15 @@ export class Util {
     return m.toDate();
   }
 
+  static getTimezones(): string[] {
+    let timezones = [''];
+    return timezones.concat(moment.tz.names());
+  }
+
+  static getDefaultTimezone(): string {
+    return defaultTz;
+  }
+
   static newGuid() {
     let arr = new Uint8Array(16);
     window.crypto.getRandomValues(arr);
