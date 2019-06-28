@@ -46,7 +46,6 @@ export class OrgPage {
     this.timezones = DateUtil.getTimezones();
     this.defaultTz = DateUtil.getDefaultTimezone();
 
-    console.log('defaultTz', this.defaultTz);
     this.invites = null;
 
     this.updateOrgForm = fb.group({
