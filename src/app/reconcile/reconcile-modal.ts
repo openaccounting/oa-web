@@ -45,6 +45,7 @@ export class ReconcileModal {
   public balance: number;
   public reconciled: number;
   public error: AppError;
+  public org: Org;
 
   constructor(
     public activeModal: NgbActiveModal,
@@ -52,7 +53,9 @@ export class ReconcileModal {
     private txService: TransactionService,
     private sessionService: SessionService,
     private fb: FormBuilder
-  ) {}
+  ) {
+    this.org = this.sessionService.getOrg();
+  }
 
   setData(account: Account, rec: Reconciliation) {
     this.account = account;

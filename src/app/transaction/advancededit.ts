@@ -15,6 +15,7 @@ import {
   AbstractControl
 } from '@angular/forms';
 import { Util } from '../shared/util';
+import { DateUtil } from '../shared/dateutil';
 import { OrgService } from '../core/org.service';
 import { TransactionService } from '../core/transaction.service';
 
@@ -50,7 +51,7 @@ export class AdvancedEdit {
 
     this.org = this.orgService.getCurrentOrg();
 
-    let dateString = Util.getLocalDateString(item.tx.date);
+    let dateString = DateUtil.getLocalDateString(item.tx.date, this.org.timezone);
 
     this.form = new FormGroup({
       date: new FormControl(dateString),
@@ -110,20 +111,9 @@ export class AdvancedEdit {
     this.error = null;
 
     let date = this.item.tx.id ? this.item.tx.date : new Date();
-    let formDate = Util.getDateFromLocalDateString(this.form.value.date);
+    let formDate = DateUtil.getDateFromLocalDateString(this.form.value.date, this.org.timezone);
 
-    if(formDate.getTime()) {
-      // make the time be at the very end of the day
-      formDate.setHours(23, 59, 59, 999);
-    }
-
-    let sameDay = formDate.getFullYear() === date.getFullYear() &&
-      formDate.getMonth() === date.getMonth() &&
-      formDate.getDate() === date.getDate();
-
-    if(formDate.getTime() && !sameDay) {
-      date = formDate;
-    }
+    date = DateUtil.computeTransactionDate(formDate, date, this.org.timezone);
 
     let tx = new Transaction({
       id: this.item.tx.id,

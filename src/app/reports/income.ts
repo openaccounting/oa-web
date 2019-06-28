@@ -18,7 +18,7 @@ import {
   ValidationErrors
 } from '@angular/forms';
 import { AppError } from '../shared/error';
-import { Util } from '../shared/util';
+import { DateUtil } from '../shared/dateutil';
 
 @Component({
   selector: 'app-income',
@@ -44,11 +44,16 @@ export class IncomeReport {
     private orgService: OrgService,
     private configService: ConfigService,
     private sessionService: SessionService) {
+  }
+
+  ngOnInit() {
+    this.sessionService.setLoading(true);
+    this.org = this.orgService.getCurrentOrg();
+
     this.startDate = new Date();
-    this.startDate.setDate(1);
-    this.startDate.setHours(0, 0, 0, 0);
-    this.endDate = new Date(this.startDate);
-    this.endDate.setMonth(this.startDate.getMonth() + 1);
+    DateUtil.setFirstOfMonth(this.startDate, this.org.timezone);
+    DateUtil.setBeginOfDay(this.startDate, this.org.timezone);
+    this.endDate = DateUtil.getOneMonthLater(this.startDate, this.org.timezone);
 
     let reportData = this.configService.get('reportData');
 
@@ -63,15 +68,10 @@ export class IncomeReport {
       }
     }
 
-    this.form = fb.group({
-      startDate: [Util.getLocalDateString(this.startDate), Validators.required],
-      endDate: [Util.getLocalDateString(new Date(this.endDate.getTime() - 1)), Validators.required]
+    this.form = this.fb.group({
+      startDate: [DateUtil.getLocalDateString(this.startDate, this.org.timezone), Validators.required],
+      endDate: [DateUtil.getLocalDateStringExcl(this.endDate, this.org.timezone), Validators.required]
     });
-  }
-
-  ngOnInit() {
-    this.sessionService.setLoading(true);
-    this.org = this.orgService.getCurrentOrg();
 
     this.treeSubscription = this.accountService.getAccountTreeWithPeriodBalance(this.startDate, this.endDate)
       .subscribe(tree => {
@@ -91,9 +91,8 @@ export class IncomeReport {
     this.treeSubscription.unsubscribe();
     //this.dataService.setLoading(true);
     this.showDateForm = false;
-    this.startDate = Util.getDateFromLocalDateString(this.form.value.startDate);
-    this.endDate = Util.getDateFromLocalDateString(this.form.value.endDate);
-    this.endDate.setDate(this.endDate.getDate() + 1);
+    this.startDate = DateUtil.getDateFromLocalDateString(this.form.value.startDate, this.org.timezone);
+    this.endDate = DateUtil.getDateFromLocalDateStringExcl(this.form.value.endDate, this.org.timezone);
 
     let reportData = this.configService.get('reportData');
 

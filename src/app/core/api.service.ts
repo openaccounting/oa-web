@@ -22,7 +22,7 @@ export class ApiService {
   private httpOptions = {
     headers: new HttpHeaders({
       'content-type':  'application/json',
-      'accept-version': '^1.0.1'
+      'accept-version': '^1.3.0'
     })
   };
   private orgId: string;
@@ -228,6 +228,11 @@ export class ApiService {
 
   postOrg(org: Org): Observable<Org> {
     return this.http.post<Org>(this.url + '/orgs', org, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
+  putOrg(org: Org): Observable<Org> {
+    return this.http.put<Org>(this.url + '/orgs/' + this.orgId, org, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 

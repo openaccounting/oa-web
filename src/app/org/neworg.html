@@ -34,6 +34,14 @@
       <input formControlName="precision" type="text" class="form-control" id="precision" placeholder="Decimal Places">
     </div>
     <div class="form-group">
+        <label for="timezone">Timezone</label>
+        <select class="form-control" id="timezone" formControlName="timezone">
+            <option *ngFor="let tz of timezones" [value]="tz">
+              {{tz}}
+            </option>
+          </select>
+      </div>
+    <div class="form-group">
       <label for="createDefaultAccounts">Create default accounts<br>(can be customized later)</label>
       <input formControlName="createDefaultAccounts" id="createDefaultAccounts" type="checkbox" class="form-control" />
     </div>

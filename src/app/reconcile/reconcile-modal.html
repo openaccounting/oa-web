@@ -14,7 +14,7 @@
         <div class="col-6 inflows">
           <div class="container-fluid">
             <div *ngFor="let item of inflows" class="row">
-              <div class="col-3">{{item.tx.date | date:"M/d/y"}}</div>
+              <div class="col-3">{{item.tx.date | datetz:"M/D/YYYY":org.timezone}}</div>
               <div class="col-4">{{item.tx.description}}</div>
               <div class="col-3">{{item.amount | currencyFormat:account.precision:account.currency}}</div>
               <div class="col-2">
@@ -26,7 +26,7 @@
         <div class="col-6 outflows">
           <div class="container-fluid">
             <div *ngFor="let item of outflows" class="row">
-              <div class="col-3">{{item.tx.date | date:"M/d/y"}}</div>
+              <div class="col-3">{{item.tx.date | datetz:"M/D/YYYY":org.timezone}}</div>
               <div class="col-4">{{item.tx.description}}</div>
               <div class="col-3">{{item.amount | currencyFormat:account.precision:account.currency}}</div>
               <div class="col-2">

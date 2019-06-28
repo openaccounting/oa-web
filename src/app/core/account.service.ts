@@ -590,13 +590,6 @@ export class AccountService {
     return this.apiService.deleteAccount(id);
   }
 
-  getPeriodStart(): Date {
-    let date = new Date();
-    date.setDate(1);
-    date.setHours(0, 0, 0, 0);
-    return date;
-  }
-
   createDefaultAccounts(tree: AccountTree): Observable<any> {
     let assetAccount = tree.getAccountByName('Assets', 1);
     let equityAccount = tree.getAccountByName('Equity', 1);

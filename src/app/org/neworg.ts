@@ -12,6 +12,7 @@ import { OrgService } from '../core/org.service';
 import { Org } from '../shared/org';
 import { AppError } from '../shared/error';
 import { Util } from '../shared/util';
+import { DateUtil } from '../shared/dateutil';
 
 @Component({
   selector: 'app-neworg',
@@ -22,16 +23,22 @@ export class NewOrgPage {
   public error: AppError;
   public joinOrgForm: FormGroup;
   public joinOrgError: AppError;
+  public timezones: string[];
+  public defaultTz: string;
 
   constructor(
     private log: Logger,
     private orgService: OrgService,
     private fb: FormBuilder
    ) {
+    this.timezones = DateUtil.getTimezones();
+    this.defaultTz = DateUtil.getDefaultTimezone();
+
     this.form = fb.group({
       'name': ['', Validators.required],
       'currency': ['USD', Validators.required],
       'precision': [2, Validators.required],
+      'timezone': [this.defaultTz, Validators.required],
       'createDefaultAccounts': [true, Validators.required]
     });
 

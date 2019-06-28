@@ -35,7 +35,7 @@
         <form [id]="'form' + item.tx.id + item.activeSplitIndex" [formGroup]="item.form" *ngFor="let item of items; let i = index">
           <div class="row" (click)="editTransaction(item, $event)" [ngClass]="{odd: !(i % 2), editing: item.editing}">
             <div class="col custom-3 date">
-              <span *ngIf="!item.editing" class="date">{{item.tx.date | date:"M/d/y"}}</span>
+              <span *ngIf="!item.editing" class="date">{{item.tx.date | datetz:"M/D/YYYY":org.timezone}}</span>
               <input *ngIf="item.editing" type="date" formControlName="date" placeholder="Date" class="form-control" (keyup.enter)="onEnter(item, $event)"/>
             </div>
             <div class="col custom-7 description">

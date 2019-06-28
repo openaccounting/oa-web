@@ -14,6 +14,7 @@ import { Org } from '../shared/org';
 import { Invite } from '../shared/invite';
 import { AppError } from '../shared/error';
 import { Util } from '../shared/util';
+import { DateUtil } from '../shared/dateutil';
 
 @Component({
   selector: 'app-org',
@@ -30,7 +31,11 @@ export class OrgPage {
   public inviteFormError: AppError;
   public newOrgForm: FormGroup;
   public newOrgError: AppError;
+  public updateOrgForm: FormGroup;
+  public updateOrgError: AppError;
   public invites: Invite[];
+  public timezones: string[];
+  public defaultTz: string;
 
   constructor(
     private log: Logger,
@@ -38,7 +43,17 @@ export class OrgPage {
     private fb: FormBuilder
    ) {
 
+    this.timezones = DateUtil.getTimezones();
+    this.defaultTz = DateUtil.getDefaultTimezone();
+
     this.invites = null;
+
+    this.updateOrgForm = fb.group({
+      'name': ['', Validators.required],
+      'currency': [{value: '', disabled: true}, Validators.required],
+      'precision': [{value: null, disabled: true}, Validators.required],
+      'timezone': ['', Validators.required]
+    });
 
     this.chooseOrgForm = fb.group({
       'id': [null, Validators.required]
@@ -56,6 +71,7 @@ export class OrgPage {
       'name': ['', Validators.required],
       'currency': ['', Validators.required],
       'precision': [null, Validators.required],
+      'timezone': [this.defaultTz, Validators.required],
       'createDefaultAccounts': [true, Validators.required]
     });
   }
@@ -63,12 +79,22 @@ export class OrgPage {
   ngOnInit() {
     this.currentOrg = this.orgService.getCurrentOrg();
 
+    this.updateOrgForm.setValue(
+      {
+        name: this.currentOrg.name,
+        currency: this.currentOrg.currency,
+        precision: this.currentOrg.precision,
+        timezone: this.currentOrg.timezone
+      }
+    );
+
     this.chooseOrgForm.setValue({id: this.currentOrg.id});
     this.newOrgForm.setValue(
       {
         name: '',
         currency: this.currentOrg.currency,
         precision: this.currentOrg.precision,
+        timezone: this.defaultTz,
         createDefaultAccounts: true
       }
     );
@@ -137,6 +163,22 @@ export class OrgPage {
           this.newOrgError = error;
         }
     );
+  }
+
+  updateOrgSubmit() {
+    let org = this.currentOrg;
+    org.name = this.updateOrgForm.get('name').value;
+    org.timezone = this.updateOrgForm.get('timezone').value;
+
+    this.orgService.updateOrg(org)
+      .subscribe(
+        org => {
+          this.log.debug(org);
+        },
+        error => {
+          this.updateOrgError = error;
+        }
+      );
   }
 
   deleteInvite(invite: Invite) {

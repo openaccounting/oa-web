@@ -1,4 +1,4 @@
-<h1>Income Statement<br>{{startDate | date:"shortDate"}} - {{endDate.getTime() - 1 | date:"shortDate"}} (<a [routerLink]="" (click)="toggleShowDateForm()">edit</a>)</h1>
+<h1>Income Statement<br>{{startDate | datetz:"M/D/YYYY":org.timezone}} - {{endDate.getTime() - 1 | datetz:"M/D/YYYY":org.timezone}} (<a [routerLink]="" (click)="toggleShowDateForm()">edit</a>)</h1>
 
 <div class="section">
   <form *ngIf="showDateForm" [formGroup]="form" (ngSubmit)="onSubmit()">

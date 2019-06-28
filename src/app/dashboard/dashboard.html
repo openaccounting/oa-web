@@ -56,7 +56,7 @@
       </div>
       <div class="row" *ngFor="let recentTx of recentTxs" [routerLink]="'/accounts/'+recentTx.account.id+'/transactions'" [ngClass]="{hidden: recentTx.hidden}">
         <div class="col-3 col-md-2 date">
-          {{recentTx.tx.date | date:"M/d"}}
+          {{recentTx.tx.date | datetz:"M/D":org.timezone}}
         </div>
         <div class="col-5 col-md-6 description">
           {{recentTx.tx.description}}
