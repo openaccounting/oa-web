@@ -274,6 +274,14 @@ export class TxListPage implements OnInit, AfterViewChecked {
         return dateDiff;
       }
 
+      if(!a.tx.inserted) {
+        return 1;
+      }
+
+      if(!b.tx.inserted) {
+        return -1;
+      }
+
       let insertedDiff = a.tx.inserted.getTime() - b.tx.inserted.getTime();
 
       return insertedDiff;
