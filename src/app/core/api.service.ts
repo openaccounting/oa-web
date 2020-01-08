@@ -113,7 +113,6 @@ export class ApiService {
     return this.http.get<Transaction[]>(url, this.httpOptions)
       .map(transactions => {
         return transactions.map(transaction => {
-          // TODO do this on all transactions
           transaction = new Transaction(transaction);
           transaction.date = new Date(transaction.date);
           transaction.inserted = new Date(transaction.inserted);
@@ -141,6 +140,7 @@ export class ApiService {
     return this.http.get<Transaction[]>(url, this.httpOptions)
       .map(transactions => {
         return transactions.map(transaction => {
+          transaction = new Transaction(transaction);
           transaction.date = new Date(transaction.date);
           transaction.inserted = new Date(transaction.inserted);
           transaction.updated = new Date(transaction.updated);
