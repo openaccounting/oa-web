@@ -19,10 +19,10 @@
             <span>Transfer</span>
           </div>
           <div class="col custom-3">
-            <span>Debit</span>
+            <span>{{account | debitCredit:'debit'}}</span>
           </div>
           <div class="col custom-3">
-            <span>Credit</span>
+            <span>{{account | debitCredit:'credit'}}</span>
           </div>
           <div class="col custom-3">
             <span>Balance</span>
