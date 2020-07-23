@@ -39,7 +39,7 @@ export class NewOrgPage {
       'currency': ['USD', Validators.required],
       'precision': [2, Validators.required],
       'timezone': [this.defaultTz, Validators.required],
-      'createDefaultAccounts': [true, Validators.required]
+      'createDefaultAccounts': ['business']
     });
 
     this.joinOrgForm = fb.group({

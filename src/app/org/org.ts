@@ -72,7 +72,7 @@ export class OrgPage {
       'currency': ['', Validators.required],
       'precision': [null, Validators.required],
       'timezone': [this.defaultTz, Validators.required],
-      'createDefaultAccounts': [true, Validators.required]
+      'createDefaultAccounts': ['']
     });
   }
 
@@ -95,7 +95,7 @@ export class OrgPage {
         currency: this.currentOrg.currency,
         precision: this.currentOrg.precision,
         timezone: this.defaultTz,
-        createDefaultAccounts: true
+        createDefaultAccounts: ''
       }
     );
 
