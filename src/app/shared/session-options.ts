@@ -1,5 +1,5 @@
 export class SessionOptions {
-  createDefaultAccounts: boolean;
+  createDefaultAccounts: string;
   constructor(options: any = {}) {
     this.createDefaultAccounts = options.createDefaultAccounts;
   }

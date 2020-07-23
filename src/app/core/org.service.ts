@@ -37,7 +37,7 @@ export class OrgService {
     return this.apiService.getOrgs();
   }
 
-  newOrg(org: Org, createDefaultAccounts: boolean): Observable<Org> {
+  newOrg(org: Org, createDefaultAccounts: string): Observable<Org> {
     let sessionOptions = new SessionOptions({
       createDefaultAccounts: createDefaultAccounts
     });

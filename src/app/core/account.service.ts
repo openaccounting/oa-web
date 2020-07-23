@@ -23,6 +23,7 @@ import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/take';
 import { Util } from '../shared/util';
+import { businessAccounts } from '../fixtures/businessAccounts';
 import { personalAccounts } from '../fixtures/personalAccounts';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 
@@ -62,7 +63,7 @@ export class AccountService {
 
         if(options.createDefaultAccounts) {
           this.getAccountTree().take(1).switchMap(tree => {
-            return this.createDefaultAccounts(tree);
+            return this.createDefaultAccounts(tree, options.createDefaultAccounts);
           }).subscribe(accounts => {
             log.debug('Created default accounts');
             log.debug(accounts);
@@ -590,7 +591,7 @@ export class AccountService {
     return this.apiService.deleteAccount(id);
   }
 
-  createDefaultAccounts(tree: AccountTree): Observable<any> {
+  createDefaultAccounts(tree: AccountTree, type: string): Observable<any> {
     let assetAccount = tree.getAccountByName('Assets', 1);
     let equityAccount = tree.getAccountByName('Equity', 1);
     let liabilityAccount = tree.getAccountByName('Liabilities', 1);
@@ -608,10 +609,10 @@ export class AccountService {
       'Expenses': [expenseAccount.id, true]
     };
 
-    let newAccounts;
+    let newAccounts = type === 'business' ? businessAccounts : personalAccounts;
 
     try {
-      newAccounts = personalAccounts.map(data => {
+      newAccounts = newAccounts.map(data => {
         let id = Util.newGuid();
         let [parentId, debitBalance] = accountNameMap[data.parent];
 
