@@ -11,8 +11,8 @@ export class Transaction {
   splits: Split[];
   constructor(options: any = {}) {
     this.id = options.id;
-    this.orgId = options.id;
-    this.userId = options.id;
+    this.orgId = options.orgId;
+    this.userId = options.userId;
     this.date = options.date ? new Date(options.date) : null;
     this.inserted = options.inserted ? new Date(options.inserted) : null;
     this.updated = options.updated ? new Date(options.updated) : null;
