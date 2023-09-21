@@ -29,8 +29,8 @@
         <h4>Assets</h4>
       </div>
       <div class="col-4 amount">
-        <h4 *ngIf="priceSource === 'price'">{{+assetAccount.totalNativeBalancePrice | currencyFormat:org.precision}}</h4>
-        <h4 *ngIf="priceSource === 'cost'">{{+assetAccount.totalNativeBalanceCost | currencyFormat:org.precision}}</h4>
+        <h4 *ngIf="priceSource === 'price'">{{+assetAccount.totalNativeBalancePrice | currencyFormat:org.precision:org.currency}}</h4>
+        <h4 *ngIf="priceSource === 'cost'">{{+assetAccount.totalNativeBalanceCost | currencyFormat:org.precision:org.currency}}</h4>
       </div>
     </div>
     <div class="row" *ngFor="let account of assetAccounts" [attr.depth]="account.depth">
@@ -39,10 +39,10 @@
         <span *ngIf="!account.children.length"><a [routerLink]="'/accounts/' + account.id + '/transactions'">{{account.name | slice:0:30}}</a></span>
       </div>
       <div class="col-4 amount" *ngIf="priceSource === 'price' && account.totalNativeBalancePrice">
-        {{+account.totalNativeBalancePrice | currencyFormat:org.precision}}
+        {{+account.totalNativeBalancePrice | currencyFormat:org.precision:org.currency}}
       </div>
       <div class="col-4 amount" *ngIf="priceSource === 'cost' && account.totalNativeBalanceCost">
-        {{+account.totalNativeBalanceCost | currencyFormat:org.precision}}
+        {{+account.totalNativeBalanceCost | currencyFormat:org.precision:org.currency}}
       </div>
     </div>
     <div class="row">
@@ -55,8 +55,8 @@
         <h4>Liabilities</h4>
       </div>
       <div class="col-4 amount">
-        <h4 *ngIf="priceSource === 'price'">{{-liabilityAccount.totalNativeBalancePrice | currencyFormat:org.precision}}</h4>
-        <h4 *ngIf="priceSource === 'cost'">{{-liabilityAccount.totalNativeBalanceCost | currencyFormat:org.precision}}</h4>
+        <h4 *ngIf="priceSource === 'price'">{{-liabilityAccount.totalNativeBalancePrice | currencyFormat:org.precision:org.currency}}</h4>
+        <h4 *ngIf="priceSource === 'cost'">{{-liabilityAccount.totalNativeBalanceCost | currencyFormat:org.precision:org.currency}}</h4>
       </div>
     </div>
     <div class="row" *ngFor="let account of liabilityAccounts" [attr.depth]="account.depth">
@@ -65,10 +65,10 @@
         <span *ngIf="!account.children.length"><a [routerLink]="'/accounts/' + account.id + '/transactions'">{{account.name | slice:0:30}}</a></span>
       </div>
       <div class="col-4 amount" *ngIf="priceSource === 'price' && account.totalNativeBalancePrice">
-        {{-account.totalNativeBalancePrice | currencyFormat:org.precision}}
+        {{-account.totalNativeBalancePrice | currencyFormat:org.precision:org.currency}}
       </div>
       <div class="col-4 amount" *ngIf="priceSource === 'cost' && account.totalNativeBalanceCost">
-        {{-account.totalNativeBalanceCost | currencyFormat:org.precision}}
+        {{-account.totalNativeBalanceCost | currencyFormat:org.precision:org.currency}}
       </div>
     </div>
     <div class="row" depth="1">
@@ -76,8 +76,8 @@
         <h4>Equity</h4>
       </div>
       <div class="col-4 amount">
-        <h4 *ngIf="priceSource === 'price'">{{-equityAccount.totalNativeBalancePrice | currencyFormat:org.precision}}</h4>
-        <h4 *ngIf="priceSource === 'cost'">{{-equityAccount.totalNativeBalanceCost | currencyFormat:org.precision}}</h4>
+        <h4 *ngIf="priceSource === 'price'">{{-equityAccount.totalNativeBalancePrice | currencyFormat:org.precision:org.currency}}</h4>
+        <h4 *ngIf="priceSource === 'cost'">{{-equityAccount.totalNativeBalanceCost | currencyFormat:org.precision:org.currency}}</h4>
       </div>
     </div>
     <div class="row" *ngFor="let account of equityAccounts" [attr.depth]="account.depth">
@@ -86,10 +86,10 @@
         <span *ngIf="!account.children.length"><a [routerLink]="'/accounts/' + account.id + '/transactions'">{{account.name | slice:0:30}}</a></span>
       </div>
       <div class="col-4 amount" *ngIf="priceSource === 'price' && account.totalNativeBalancePrice">
-        {{-account.totalNativeBalancePrice | currencyFormat:org.precision}}
+        {{-account.totalNativeBalancePrice | currencyFormat:org.precision:org.currency}}
       </div>
       <div class="col-4 amount" *ngIf="priceSource === 'cost' && account.totalNativeBalanceCost">
-        {{-account.totalNativeBalanceCost | currencyFormat:org.precision}}
+        {{-account.totalNativeBalanceCost | currencyFormat:org.precision:org.currency}}
       </div>
     </div>
   </div>

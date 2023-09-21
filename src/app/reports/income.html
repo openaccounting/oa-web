@@ -24,7 +24,7 @@
         <h4>Income</h4>
       </div>
       <div class="col-4 amount">
-        <h4>{{-incomeAccount.totalNativeBalanceCost | currencyFormat:org.precision}}</h4>
+        <h4>{{-incomeAccount.totalNativeBalanceCost | currencyFormat:org.precision:org.currency}}</h4>
       </div>
     </div>
     <div class="row" *ngFor="let account of incomeAccounts" [attr.depth]="account.depth">
@@ -33,7 +33,7 @@
         <span *ngIf="!account.children.length"><a [routerLink]="'/accounts/' + account.id + '/transactions'">{{account.name | slice:0:30}}</a></span>
       </div>
       <div class="col-4 amount" *ngIf="account.totalNativeBalanceCost">
-        {{-account.totalNativeBalanceCost | currencyFormat:org.precision}}
+        {{-account.totalNativeBalanceCost | currencyFormat:org.precision:org.currency}}
       </div>
     </div>
     <div class="row" depth="1">
@@ -41,7 +41,7 @@
         <h4>Expenses</h4>
       </div>
       <div class="col-4 amount">
-        <h4>{{expenseAccount.totalNativeBalanceCost | currencyFormat:org.precision}}</h4>
+        <h4>{{expenseAccount.totalNativeBalanceCost | currencyFormat:org.precision:org.currency}}</h4>
       </div>
     </div>
     <div class="row" *ngFor="let account of expenseAccounts" [attr.depth]="account.depth">
@@ -50,7 +50,7 @@
         <span *ngIf="!account.children.length"><a [routerLink]="'/accounts/' + account.id + '/transactions'">{{account.name | slice:0:30}}</a></span>
       </div>
       <div class="col-4 amount" *ngIf="account.totalNativeBalanceCost">
-        {{account.totalNativeBalanceCost | currencyFormat:org.precision}}
+        {{account.totalNativeBalanceCost | currencyFormat:org.precision:org.currency}}
       </div>
     </div>
     <div class="row" depth="1">
@@ -58,7 +58,7 @@
         <h4>Net Income</h4>
       </div>
       <div class="col-4 amount">
-        <h4>{{-incomeAccount.totalNativeBalanceCost - expenseAccount.totalNativeBalanceCost | currencyFormat:org.precision}}</h4>
+        <h4>{{-incomeAccount.totalNativeBalanceCost - expenseAccount.totalNativeBalanceCost | currencyFormat:org.precision:org.currency}}</h4>
       </div>
     </div>
   </div>
