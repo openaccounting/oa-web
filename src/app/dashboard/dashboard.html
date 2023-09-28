@@ -20,7 +20,7 @@
           <h5>Current spending</h5>
         </div>
         <div class="col-4 amount">
-          <h5>{{expenseAmount | currencyFormat:org.precision}}</h5>
+          <h5>{{expenseAmount | currencyFormat:org.precision:org.currency}}</h5>
         </div>
       </div>
       <div class="row" *ngFor="let expense of expenseAccounts" [routerLink]="'/accounts/'+expense.id+'/transactions'" [ngClass]="{hidden: hiddenExpenses[expense.id]}">
@@ -28,7 +28,7 @@
           {{expense.fullName | accountName:2}}
         </div>
         <div class="col-4 amount">
-          {{expense.nativeBalanceCost | currencyFormat:org.precision}}
+          {{expense.nativeBalanceCost | currencyFormat:org.precision:org.currency}}
         </div>
       </div>
       <div class="row">
@@ -62,7 +62,7 @@
           {{recentTx.tx.description}}
         </div>
         <div class="col-4 col-md-4 amount" [ngClass]="{'negative': recentTx.split.amount > 0}">
-          {{-recentTx.split.amount | currencyFormat:recentTx.account.precision}}
+          {{-recentTx.split.amount | currencyFormat:recentTx.account.precision:recentTx.account.currency}}
         </div>
       </div>
       <div class="row">
