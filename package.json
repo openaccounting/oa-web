@@ -31,7 +31,7 @@
     "@types/moment-timezone": "^0.5.12",
     "bootstrap": "^4.3.1",
     "core-js": "^2.5.4",
-    "moment-timezone": "^0.5.25",
+    "moment-timezone": "^0.5.35",
     "rxjs": "~6.2.0",
     "rxjs-compat": "6.0.0",
     "zone.js": "~0.8.26"
