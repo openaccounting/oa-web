@@ -59,7 +59,8 @@
           {{recentTx.tx.date | datetz:"M/D":org.timezone}}
         </div>
         <div class="col-5 col-md-6 description">
-          {{recentTx.tx.description}}
+          <div class="primary">{{recentTx.tx.description}}</div>
+          <div class="additional">{{recentTx.account.fullName}}</div>
         </div>
         <div class="col-4 col-md-4 amount" [ngClass]="{'negative': recentTx.split.amount > 0}">
           {{-recentTx.split.amount | currencyFormat:recentTx.account.precision:recentTx.account.currency}}
