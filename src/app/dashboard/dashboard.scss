@@ -41,6 +41,19 @@
   .expanded .hidden {
     display: flex
   }
+  .row {
+    padding-bottom: 1em;
+    .description {
+      .primary:empty::after {
+        content: ".";
+        visibility: hidden;
+      }
+      .additional {
+        font-size: small;
+        color: $black;
+      }
+    }
+  }
 }
 
 @media (max-width: 767px) {
